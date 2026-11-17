@@ -262,7 +262,31 @@ frame.scrollIntoView({behavior:'smooth'});
  class="game-frame"
  src="https://www.miniplay.com/embed/red-ball-4"
  allowfullscreen>
-</iframe>
+</iframe<div class="game" data-name="stick war">
+ <div class="cover">⚔️</div>
+ <div class="info">
+  <h3>Stick War</h3>
+  <p>Ordunu kur, düşman heykelini yok et!</p>
+  <button onclick="
+   document.getElementById('stickwar-area').style.display='block';
+   document.getElementById('stickwar-area').scrollIntoView({behavior:'smooth'});
+  ">
+   ▶️ OYNA
+  </button>
+ </div>
+</div>
+
+<div id="stickwar-area" style="display:none;margin-top:25px">
+ <h2>⚔️ Stick War</h2>
+ <iframe
+  src="https://stickwar.org/"
+  width="100%"
+  height="650"
+  allow="autoplay; fullscreen"
+  allowfullscreen
+  style="border:0;border-radius:15px;background:#111">
+ </iframe>
+</div>>
  © 2026 Kanka Games | Ücretsiz Oyun Platformu
 </footer>
 
