@@ -228,7 +228,246 @@ footer{
    allowfullscreen>
   </iframe>
  </section>
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Geometry Dash - Kanka Edition</title>
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;background:#090719;color:white;
+ font-family:Arial,sans-serif;text-align:center;
+ overflow:hidden;
+}
+header{
+ padding:15px;background:#17102e;
+ color:#c084fc;font-size:23px;font-weight:bold;
+}
+#gamebox{
+ width:min(950px,96vw);
+ margin:25px auto;
+}
+canvas{
+ width:100%;display:block;
+ background:#120d2b;
+ border:3px solid #8b5cf6;
+ border-radius:12px;
+ touch-action:manipulation;
+}
+#score{font-size:22px;margin:15px}
+button{
+ background:#9333ea;color:white;border:0;
+ padding:14px 28px;border-radius:10px;
+ font-size:17px;font-weight:bold;
+ cursor:pointer;margin:8px;
+}
+p{color:#ccc}
+</style>
+</head>
+<body>
 
+<header>🔷 GEOMETRY DASH: KANKA EDITION</header>
+
+<div id="gamebox">
+ <div id="score">PUAN: 0</div>
+ <canvas id="game" width="900" height="400"></canvas>
+ <h3 id="message">Başlamak için dokun veya SPACE tuşuna bas!</h3>
+ <button onclick="restart()">YENİDEN BAŞLAT</button>
+ <p>Bilgisayar: SPACE / ↑ | Telefon: Ekrana dokun</p>
+</div>
+
+<script>
+const canvas=document.getElementById("game");
+const ctx=canvas.getContext("2d");
+const scoreText=document.getElementById("score");
+const message=document.getElementById("message");
+
+let player,obstacles,score,speed,started,dead,lastTime;
+let audio;
+
+function sound(freq=500){
+ try{
+  audio=audio||new (window.AudioContext||window.webkitAudioContext)();
+  if(audio.state==="suspended")audio.resume();
+  const osc=audio.createOscillator();
+  const gain=audio.createGain();
+  osc.frequency.value=freq;
+  osc.type="square";
+  gain.gain.setValueAtTime(.07,audio.currentTime);
+  gain.gain.exponentialRampToValueAtTime(.001,audio.currentTime+.12);
+  osc.connect(gain);
+  gain.connect(audio.destination);
+  osc.start();
+  osc.stop(audio.currentTime+.12);
+ }catch(e){}
+}
+
+function reset(){
+ player={x:110,y:290,size:32,vy:0,ground:true};
+ obstacles=[];
+ score=0;
+ speed=6;
+ started=false;
+ dead=false;
+ lastTime=0;
+ scoreText.textContent="PUAN: 0";
+ message.textContent="Başlamak için dokun veya SPACE tuşuna bas!";
+ draw();
+}
+
+function jump(){
+ if(dead){
+  restart();
+  return;
+ }
+ if(!started){
+  started=true;
+  message.textContent="Zıpla ve dikenlerden kaç!";
+ }
+ if(player.ground){
+  player.vy=-14;
+  player.ground=false;
+  sound(650);
+ }
+}
+
+function restart(){
+ reset();
+ started=true;
+ message.textContent="Oyun başladı!";
+ jump();
+}
+
+function addObstacle(){
+ const height=35+Math.random()*15;
+ obstacles.push({
+  x:930,
+  w:30,
+  h:height
+ });
+}
+
+function draw(){
+ ctx.clearRect(0,0,900,400);
+
+ // Arka plan
+ const gradient=ctx.createLinearGradient(0,0,0,400);
+ gradient.addColorStop(0,"#21134a");
+ gradient.addColorStop(1,"#090719");
+ ctx.fillStyle=gradient;
+ ctx.fillRect(0,0,900,400);
+
+ // Arka plan ışıkları
+ ctx.fillStyle="#ffffff18";
+ for(let i=0;i<30;i++){
+  let x=(i*137+score*2)%900;
+  let y=(i*71)%260;
+  ctx.fillRect(x,y,3,3);
+ }
+
+ // Zemin
+ ctx.fillStyle="#7c3aed";
+ ctx.fillRect(0,330,900,70);
+ ctx.fillStyle="#c084fc";
+ ctx.fillRect(0,330,900,5);
+
+ // Oyuncu
+ ctx.save();
+ ctx.translate(player.x+16,player.y+16);
+ ctx.rotate(started&&!dead?score*.025:0);
+ ctx.fillStyle="#22e6ff";
+ ctx.shadowColor="#22e6ff";
+ ctx.shadowBlur=18;
+ ctx.fillRect(-16,-16,32,32);
+ ctx.strokeStyle="white";
+ ctx.lineWidth=3;
+ ctx.strokeRect(-16,-16,32,32);
+ ctx.restore();
+
+ // Dikenler
+ obstacles.forEach(o=>{
+  ctx.fillStyle="#ff3e79";
+  ctx.shadowColor="#ff0055";
+  ctx.shadowBlur=12;
+  ctx.beginPath();
+  ctx.moveTo(o.x,330);
+  ctx.lineTo(o.x+o.w/2,330-o.h);
+  ctx.lineTo(o.x+o.w,330);
+  ctx.closePath();
+  ctx.fill();
+  ctx.shadowBlur=0;
+ });
+
+ ctx.fillStyle="white";
+ ctx.font="bold 17px Arial";
+ ctx.fillText("KANKA GAMES",20,30);
+}
+
+function update(delta){
+ if(!started||dead)return;
+
+ const dt=Math.min(delta/16.67,2);
+
+ player.vy+=.7*dt;
+ player.y+=player.vy*dt;
+
+ if(player.y+player.size>=330){
+  player.y=330-player.size;
+  player.vy=0;
+  player.ground=true;
+ }
+
+ obstacles.forEach(o=>o.x-=speed*dt);
+ obstacles=obstacles.filter(o=>o.x+o.w>0);
+
+ if(obstacles.length===0||obstacles[obstacles.length-1].x<580){
+  addObstacle();
+ }
+
+ // Çarpışma
+ obstacles.forEach(o=>{
+  const px=player.x+5;
+  const pr=player.x+player.size-5;
+  const py=player.y+5;
+  const pb=player.y+player.size;
+
+  if(pr>o.x+5&&px<o.x+o.w-5&&pb>330-o.h+8&&py<330){
+   dead=true;
+   message.textContent="💥 OYUN BİTTİ! Tekrar dene!";
+   sound(120);
+  }
+ });
+
+ score+=dt;
+ speed=Math.min(6+score/500,12);
+ scoreText.textContent="PUAN: "+Math.floor(score);
+}
+
+function loop(time){
+ if(!lastTime)lastTime=time;
+ const delta=time-lastTime;
+ lastTime=time;
+ update(delta);
+ draw();
+ requestAnimationFrame(loop);
+}
+
+document.addEventListener("keydown",e=>{
+ if(e.code==="Space"||e.code==="ArrowUp"){
+  e.preventDefault();
+  if(!e.repeat)jump();
+ }
+});
+
+canvas.addEventListener("pointerdown",jump);
+
+reset();
+requestAnimationFrame(loop);
+</script>
+</body>
+</html>
  <!-- STICK WAR OYUN ALANI -->
  <section id="stickwar-area" class="play-area">
   <h2>⚔️ Stick War</h2>
