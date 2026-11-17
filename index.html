@@ -249,7 +249,20 @@ footer{
  </div>
 </main>
 
-<footer>
+<footer><button onclick="
+let frame=document.getElementById('redball');
+frame.style.display='block';
+frame.scrollIntoView({behavior:'smooth'});
+">
+▶️ OYNA
+</button>
+
+<iframe
+ id="redball"
+ class="game-frame"
+ src="https://www.miniplay.com/embed/red-ball-4"
+ allowfullscreen>
+</iframe>
  © 2026 Kanka Games | Ücretsiz Oyun Platformu
 </footer>
 
