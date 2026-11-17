@@ -1,0 +1,1738 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>İlk Çağ: Kabileler Savaşı</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --stone-dark: #292524;
+            --stone-mid: #44403c;
+            --earth-warm: #78350f;
+            --parchment: #fef3c7;
+            --amber-fire: #f59e0b;
+        }
+        * {
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Nunito', sans-serif;
+            background-color: #1c1917;
+            color: #fef3c7;
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+        }
+        .font-tribal {
+            font-family: 'Cinzel', serif;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(28, 25, 23, 0.6);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #92400e;
+            border-radius: 3px;
+        }
+        .stone-panel {
+            background: linear-gradient(145deg, #3f3a36 0%, #262320 100%);
+            border: 3px solid #57534e;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+        }
+        .parchment-panel {
+            background: linear-gradient(135deg, #f5e6c8 0%, #e2c799 100%);
+            color: #291d12;
+            border: 4px solid #78350f;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8), inset 0 0 30px rgba(146, 64, 14, 0.25);
+        }
+        .tribal-btn {
+            background: linear-gradient(180deg, #d97706 0%, #92400e 100%);
+            border: 2px solid #fbbf24;
+            box-shadow: 0 4px 0 #451a03, 0 6px 12px rgba(0,0,0,0.4);
+            transition: transform 0.1s, filter 0.15s;
+        }
+        .tribal-btn:hover:not(:disabled) {
+            filter: brightness(1.1);
+            transform: translateY(-1px);
+        }
+        .tribal-btn:active:not(:disabled) {
+            transform: translateY(3px);
+            box-shadow: 0 1px 0 #451a03;
+        }
+        .tribal-btn:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+            filter: grayscale(0.7);
+        }
+        .tribal-btn-red {
+            background: linear-gradient(180deg, #dc2626 0%, #7f1d1d 100%);
+            border: 2px solid #fca5a5;
+            box-shadow: 0 4px 0 #450a0a, 0 6px 15px rgba(220, 38, 38, 0.4);
+        }
+        .tribal-btn-green {
+            background: linear-gradient(180deg, #16a34a 0%, #14532d 100%);
+            border: 2px solid #86efac;
+            box-shadow: 0 4px 0 #052e16, 0 6px 12px rgba(0,0,0,0.4);
+        }
+        @keyframes flicker {
+            0%, 100% { opacity: 0.9; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.04); }
+        }
+        .fire-glow {
+            animation: flicker 2.5s infinite ease-in-out;
+        }
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+            touch-action: none;
+        }
+    </style>
+</head>
+<body class="flex flex-col h-screen w-screen overflow-hidden select-none">
+
+    <!-- ==================== HİKAYE GİRİŞ EKRANI ==================== -->
+    <div id="storyModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-sm">
+        <div class="parchment-panel max-w-2xl w-full rounded-2xl p-6 sm:p-8 relative overflow-hidden flex flex-col items-center text-center">
+            <div class="w-full flex justify-between items-center mb-3 opacity-80">
+                <svg class="w-12 h-12 text-amber-900" viewBox="0 0 64 64" fill="currentColor">
+                    <path d="M32 6C16 6 6 20 6 42v16h16V44c0-6 4-10 10-10s10 4 10 10v14h16V42C58 20 48 6 32 6z"/>
+                </svg>
+                <span class="text-xs sm:text-sm font-extrabold tracking-widest uppercase text-amber-900 bg-amber-900/10 px-3 py-1 rounded-full border border-amber-900/30">
+                    M.Ö. 10.000 • Kadim Çağ
+                </span>
+                <svg class="w-12 h-12 text-amber-900" viewBox="0 0 64 64" fill="currentColor">
+                    <path d="M12 52L48 16l4 4L16 56l-4-4zm34-38l6-6 6 6-6 6-6-6z"/>
+                </svg>
+            </div>
+
+            <h1 class="font-tribal text-2xl sm:text-4xl font-black text-amber-950 mb-4 tracking-wide drop-shadow-sm">
+                İLK ÇAĞ: KABİLELER SAVAŞI
+            </h1>
+
+            <div class="w-full h-36 sm:h-44 rounded-xl bg-stone-900 border-2 border-amber-900 mb-5 relative overflow-hidden flex items-center justify-center shadow-inner">
+                <svg viewBox="0 0 600 180" class="w-full h-full object-cover">
+                    <defs>
+                        <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stop-color="#451a03"/>
+                            <stop offset="60%" stop-color="#9a3412"/>
+                            <stop offset="100%" stop-color="#ea580c"/>
+                        </linearGradient>
+                    </defs>
+                    <rect width="600" height="180" fill="url(#skyGrad)"/>
+                    <circle cx="300" cy="110" r="45" fill="#fde047" opacity="0.85"/>
+                    <path d="M0 180 L0 80 L140 120 L260 180 Z" fill="#1c1917"/>
+                    <path d="M600 180 L600 75 L460 120 L340 180 Z" fill="#1c1917"/>
+                    <rect x="296" y="105" width="8" height="55" rx="3" fill="#78716c"/>
+                    <line x1="300" y1="90" x2="300" y2="175" stroke="#ef4444" stroke-width="2" stroke-dasharray="6,4"/>
+                    <g transform="translate(278, 128)">
+                        <circle cx="8" cy="6" r="5" fill="#fef3c7"/>
+                        <path d="M3 13 Q8 11 13 13 L15 27 L10 27 L9 20 L7 20 L6 27 L1 27 Z" fill="#fef3c7"/>
+                    </g>
+                    <g transform="translate(310, 130)">
+                        <circle cx="8" cy="6" r="4.5" fill="#fef3c7"/>
+                        <path d="M4 12 Q8 10 12 12 L14 25 L10 25 L9 19 L7 19 L6 25 L2 25 Z" fill="#fef3c7"/>
+                    </g>
+                    <rect x="0" y="155" width="600" height="25" fill="#0c0a09"/>
+                </svg>
+                <div class="absolute bottom-2 left-3 right-3 flex justify-between text-[11px] font-bold text-amber-200/90">
+                    <span>🏔️ Kuzey Mağara Kabilesi</span>
+                    <span class="text-red-400">⚡ Yasak Sınır Aşıldı!</span>
+                    <span>🌋 Kızıl Kaya Kabilesi</span>
+                </div>
+            </div>
+
+            <div class="bg-amber-950/10 border border-amber-900/30 rounded-xl p-4 mb-6 text-sm sm:text-base leading-relaxed font-semibold text-stone-900">
+                <p class="mb-2">
+                    "İlk çağlarda büyük kabileler arasında kutsal bir barış anlaşması vardı: <strong class="text-red-900">Hiçbir kabileden kimse, başka bir kabilenin tarafına geçmeyecekti.</strong>"
+                </p>
+                <p>
+                    "Ancak <strong class="text-amber-900">iki meraklı çocuk</strong> gizlice sınırı aşıp bu yasak anlaşmayı bozdu! Kadim yemin bozuldu, savaş tamtamları çalmaya başladı ve kabileler arası büyük bir savaş patlak verdi..."
+                </p>
+            </div>
+
+            <div id="savedGameBanner" class="hidden w-full bg-emerald-950/15 border border-emerald-800/40 rounded-xl p-3 mb-4 text-xs sm:text-sm font-bold text-emerald-950 flex items-center justify-between">
+                <span>📜 Önceki kabile kaydın bulundu!</span>
+                <span id="savedGameSummary" class="text-emerald-900">Şef Sv. 1 • 0⭐</span>
+            </div>
+
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-3 w-full">
+                <button id="continueGameBtn" class="hidden tribal-btn-green font-tribal text-base sm:text-lg font-black text-white px-6 py-3.5 rounded-xl tracking-wider cursor-pointer flex items-center justify-center gap-2 w-full sm:w-auto">
+                    <span>📜</span>
+                    <span>KAYITLI OYUNA DEVAM ET</span>
+                </button>
+                <button id="startGameBtn" class="tribal-btn font-tribal text-base sm:text-lg font-black text-amber-50 px-6 py-3.5 rounded-xl tracking-wider cursor-pointer flex items-center justify-center gap-2 w-full sm:w-auto">
+                    <span>🔥</span>
+                    <span id="startBtnLabel">KABİLENİ YÖNET VE SAVAŞA BAŞLA</span>
+                    <span>🪓</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== ÜST KAYNAK ÇUBUĞU ==================== -->
+    <header class="stone-panel z-20 px-2 sm:px-4 py-2 flex flex-wrap items-center justify-between gap-2 shrink-0">
+        <div class="flex items-center gap-2">
+            <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-amber-700 border-2 border-amber-400 flex items-center justify-center text-lg sm:text-xl shadow-md">
+                🔥
+            </div>
+            <div>
+                <div class="flex items-center gap-1.5">
+                    <h2 id="headerTitle" class="font-tribal font-bold text-sm sm:text-base text-amber-300 leading-tight">
+                        Güneş Mağarası Kabilesi
+                    </h2>
+                    <span id="townHallBadge" class="text-[10px] sm:text-xs bg-amber-900/90 border border-amber-500/50 text-amber-200 px-1.5 py-0.5 rounded font-bold">
+                        Şef Sv. 1
+                    </span>
+                </div>
+                <p id="headerSub" class="text-[11px] text-stone-300 hidden sm:block">
+                    Mağaralara tıkla, maden çıkar ve ordunu kur!
+                </p>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-1.5 sm:gap-2.5 flex-wrap">
+            <div class="bg-stone-900/90 border border-stone-600 rounded-lg px-2 sm:px-2.5 py-1 flex items-center gap-1.5" title="Taş Kaynağı">
+                <span class="text-base sm:text-lg">🪨</span>
+                <div>
+                    <div class="text-[10px] text-stone-400 leading-none font-bold">TAŞ</div>
+                    <div id="resStone" class="text-xs sm:text-sm font-extrabold text-stone-100 leading-tight">160</div>
+                </div>
+            </div>
+
+            <div class="bg-stone-900/90 border border-amber-800 rounded-lg px-2 sm:px-2.5 py-1 flex items-center gap-1.5" title="Tahta Kaynağı">
+                <span class="text-base sm:text-lg">🪵</span>
+                <div>
+                    <div class="text-[10px] text-amber-400/80 leading-none font-bold">TAHTA</div>
+                    <div id="resWood" class="text-xs sm:text-sm font-extrabold text-amber-200 leading-tight">160</div>
+                </div>
+            </div>
+
+            <div class="bg-stone-900/90 border border-cyan-700 rounded-lg px-2 sm:px-2.5 py-1 flex items-center gap-1.5" title="Mağara Madeni">
+                <span class="text-base sm:text-lg">💎</span>
+                <div>
+                    <div class="text-[10px] text-cyan-400 leading-none font-bold">MADEN</div>
+                    <div id="resOre" class="text-xs sm:text-sm font-extrabold text-cyan-200 leading-tight">120</div>
+                </div>
+            </div>
+
+            <div class="bg-stone-900/90 border border-red-800 rounded-lg px-2 sm:px-2.5 py-1 flex items-center gap-1.5" title="Savaşçı Kapasitesi">
+                <span class="text-base sm:text-lg">🦴</span>
+                <div>
+                    <div class="text-[10px] text-red-400 leading-none font-bold">ORDU</div>
+                    <div id="armyCount" class="text-xs sm:text-sm font-extrabold text-red-200 leading-tight">8/14</div>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-1 bg-stone-900/80 border border-stone-700 rounded-lg p-1">
+                <button id="saveGameBtn" class="bg-emerald-800 hover:bg-emerald-700 border border-emerald-500/60 text-emerald-100 text-xs font-bold px-2.5 py-1.5 rounded-md cursor-pointer flex items-center gap-1" title="Oyunu Kaydet">
+                    <span>💾</span>
+                    <span class="hidden md:inline">Kaydet</span>
+                </button>
+                <button id="resetSaveBtn" class="bg-stone-800 hover:bg-red-900/80 border border-stone-600 text-stone-300 hover:text-red-200 text-xs font-bold px-2 py-1.5 rounded-md cursor-pointer" title="Kaydı Sıfırla / Yeni Oyun">
+                    🔄
+                </button>
+            </div>
+
+            <div class="flex items-center gap-1.5 bg-stone-900/80 border border-stone-700 rounded-lg px-2 py-1">
+                <button id="musicToggleBtn" class="bg-amber-900/80 hover:bg-amber-800 border border-amber-500/50 text-amber-100 text-xs font-bold px-2 py-1 rounded-md cursor-pointer flex items-center gap-1" title="Arka Plan Müziğini Aç/Kapat">
+                    <span id="musicIcon">🔊</span>
+                    <span id="musicLabel" class="hidden lg:inline">Müzik Açık</span>
+                </button>
+                <input id="volumeSlider" type="range" min="0" max="1" step="0.05" value="0.55" class="w-14 sm:w-20 accent-amber-500 cursor-pointer" title="Müzik & Ses Seviyesi">
+                <label for="customAudioInput" class="bg-stone-800 hover:bg-stone-700 border border-stone-600 text-amber-200 text-xs font-bold px-2 py-1 rounded-md cursor-pointer" title="Kendi Ses/Video Dosyanı Arka Plan Müziği Yap">
+                    🎵
+                </label>
+                <input id="customAudioInput" type="file" accept="audio/*,video/*" class="hidden">
+            </div>
+        </div>
+    </header>
+
+    <!-- ==================== ANA OYUN ALANI (CANVAS) ==================== -->
+    <main class="relative flex-1 w-full h-full overflow-hidden bg-stone-950">
+        <canvas id="gameCanvas"></canvas>
+
+        <div id="toastContainer" class="pointer-events-none absolute top-3 left-1/2 -translate-x-1/2 z-30 flex flex-col items-center gap-1.5 w-full max-w-md px-3"></div>
+
+        <div id="battleHudTop" class="hidden absolute top-3 left-3 right-3 z-20 flex flex-wrap items-center justify-between gap-2 pointer-events-none">
+            <div class="stone-panel rounded-xl px-3 py-2 pointer-events-auto flex items-center gap-3">
+                <div>
+                    <div class="text-[11px] text-amber-400 font-bold uppercase">Hedef Kabile</div>
+                    <div id="enemyTribeName" class="font-tribal font-bold text-sm sm:text-base text-white">Kızıl Kaya Kabilesi</div>
+                </div>
+                <div class="h-7 w-px bg-stone-600"></div>
+                <div>
+                    <div class="text-[11px] text-stone-400 font-bold">YIKIM</div>
+                    <div id="destructionPct" class="text-sm sm:text-base font-black text-red-400">0%</div>
+                </div>
+                <div id="battleStars" class="text-base sm:text-lg tracking-widest">☆☆☆</div>
+            </div>
+
+            <div class="flex items-center gap-2 pointer-events-auto">
+                <div class="stone-panel rounded-xl px-3 py-1.5 text-xs font-bold text-amber-200 hidden sm:block">
+                    💡 Alt çubuktan savaşçı seçip yeşil alana tıkla!
+                </div>
+                <button id="retreatBtn" class="tribal-btn-red text-white font-bold text-xs sm:text-sm px-3.5 py-2 rounded-xl cursor-pointer">
+                    🏳️ Geri Çekil
+                </button>
+            </div>
+        </div>
+
+        <div id="buildingInspector" class="hidden absolute bottom-24 sm:bottom-24 left-1/2 -translate-x-1/2 z-20 stone-panel rounded-2xl p-3 sm:p-4 w-[94%] max-w-lg shadow-2xl">
+            <div class="flex items-start justify-between gap-3">
+                <div class="flex items-center gap-3">
+                    <div id="inspIcon" class="w-12 h-12 rounded-xl bg-stone-800 border-2 border-amber-500/60 flex items-center justify-center text-2xl shrink-0">
+                        🕳️
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <h3 id="inspName" class="font-tribal font-bold text-base sm:text-lg text-amber-300">Maden Mağarası</h3>
+                            <span id="inspLevel" class="text-xs bg-amber-900 text-amber-200 px-2 py-0.5 rounded-full font-bold">Seviye 1</span>
+                        </div>
+                        <p id="inspDesc" class="text-xs text-stone-300 mt-0.5">Yer altından değerli çakmaktaşı ve maden çıkarır.</p>
+                        <div id="inspStats" class="text-xs font-bold text-emerald-400 mt-1">Üretim: +12 Maden / 10sn</div>
+                    </div>
+                </div>
+                <button id="closeInspectorBtn" class="text-stone-400 hover:text-white text-lg font-bold px-2 cursor-pointer">✕</button>
+            </div>
+
+            <div class="mt-3 pt-3 border-t border-stone-700 flex flex-wrap items-center justify-end gap-2">
+                <button id="inspCollectBtn" class="hidden tribal-btn-green text-white text-xs sm:text-sm font-bold px-3.5 py-2 rounded-xl cursor-pointer">
+                    ✨ Kaynak Topla
+                </button>
+                <button id="inspTrainMenuBtn" class="hidden tribal-btn text-white text-xs sm:text-sm font-bold px-3.5 py-2 rounded-xl cursor-pointer">
+                    🪓 İlk İnsan Eğit
+                </button>
+                <button id="inspUpgradeBtn" class="tribal-btn text-white text-xs sm:text-sm font-bold px-3.5 py-2 rounded-xl cursor-pointer flex items-center gap-1.5">
+                    <span>⬆️ Geliştir</span>
+                    <span id="inspUpgradeCost" class="text-[11px] bg-black/30 px-2 py-0.5 rounded">50🪨 50🪵</span>
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- ==================== ALT KONTROL ÇUBUĞU (KÖY MODU) ==================== -->
+    <footer id="villageFooter" class="stone-panel z-20 px-2 sm:px-4 py-2 flex items-center justify-between gap-2 shrink-0">
+        <div class="flex items-center gap-1.5 sm:gap-2 overflow-x-auto py-0.5">
+            <button id="openBuildModalBtn" class="tribal-btn text-amber-50 font-bold text-xs sm:text-sm px-3 sm:px-4 py-2.5 rounded-xl flex items-center gap-1.5 shrink-0 cursor-pointer">
+                <span>⛏️</span>
+                <span>Mağara İnşa Et</span>
+            </button>
+
+            <button id="openTrainModalBtn" class="tribal-btn text-amber-50 font-bold text-xs sm:text-sm px-3 sm:px-4 py-2.5 rounded-xl flex items-center gap-1.5 shrink-0 cursor-pointer">
+                <span>🧔</span>
+                <span>İlk İnsan Al</span>
+            </button>
+
+            <button id="collectAllBtn" class="tribal-btn-green text-white font-bold text-xs sm:text-sm px-3 sm:px-4 py-2.5 rounded-xl flex items-center gap-1.5 shrink-0 cursor-pointer">
+                <span>🧺</span>
+                <span>Tümünü Topla</span>
+            </button>
+
+            <button id="defendWaveBtn" class="bg-stone-800 hover:bg-stone-700 border-2 border-amber-600/70 text-amber-200 font-bold text-xs sm:text-sm px-3 py-2.5 rounded-xl flex items-center gap-1.5 shrink-0 cursor-pointer" title="Köyünü düşman baskınına karşı test et">
+                <span>🛡️</span>
+                <span class="hidden md:inline">Baskın Savun</span>
+            </button>
+        </div>
+
+        <button id="openAttackModalBtn" class="tribal-btn-red text-white font-tribal font-black text-xs sm:text-base px-4 sm:px-6 py-2.5 rounded-xl flex items-center gap-2 shrink-0 cursor-pointer tracking-wide">
+            <span>⚔️</span>
+            <span>KABİLELERE SALDIR</span>
+        </button>
+    </footer>
+
+    <!-- ==================== ALT KONTROL ÇUBUĞU (SAVAŞ MODU) ==================== -->
+    <footer id="battleFooter" class="hidden stone-panel z-20 px-3 py-2 flex items-center justify-center gap-2 sm:gap-4 shrink-0">
+        <div id="battleUnitBar" class="flex items-center gap-2 sm:gap-3 overflow-x-auto py-0.5"></div>
+    </footer>
+
+    <!-- ==================== MODALLAR ==================== -->
+    <div id="buildModal" class="hidden fixed inset-0 z-40 bg-black/75 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4">
+        <div class="stone-panel rounded-2xl max-w-2xl w-full max-h-[85vh] flex flex-col overflow-hidden">
+            <div class="px-5 py-3.5 border-b border-stone-600 flex items-center justify-between bg-stone-900/60">
+                <h3 class="font-tribal text-lg sm:text-xl font-bold text-amber-300 flex items-center gap-2">
+                    <span>⛏️</span> Yeni Mağara & Savunma İnşa Et
+                </h3>
+                <button class="close-modal text-stone-400 hover:text-white text-xl font-bold px-2 cursor-pointer">✕</button>
+            </div>
+            <div id="buildList" class="p-4 overflow-y-auto grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
+        </div>
+    </div>
+
+    <div id="trainModal" class="hidden fixed inset-0 z-40 bg-black/75 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4">
+        <div class="stone-panel rounded-2xl max-w-2xl w-full max-h-[85vh] flex flex-col overflow-hidden">
+            <div class="px-5 py-3.5 border-b border-stone-600 flex items-center justify-between bg-stone-900/60">
+                <div>
+                    <h3 class="font-tribal text-lg sm:text-xl font-bold text-amber-300 flex items-center gap-2">
+                        <span>🦴</span> İlk İnsanları Savaşa Hazırla
+                    </h3>
+                    <p class="text-xs text-stone-300">Mağaralardan çıkardığın maden, taş ve tahta ile ilkel aletli savaşçılar al!</p>
+                </div>
+                <button class="close-modal text-stone-400 hover:text-white text-xl font-bold px-2 cursor-pointer">✕</button>
+            </div>
+            <div id="trainList" class="p-4 overflow-y-auto grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
+        </div>
+    </div>
+
+    <div id="attackModal" class="hidden fixed inset-0 z-40 bg-black/80 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4">
+        <div class="stone-panel rounded-2xl max-w-3xl w-full max-h-[88vh] flex flex-col overflow-hidden">
+            <div class="px-5 py-3.5 border-b border-stone-600 flex items-center justify-between bg-stone-900/70">
+                <div>
+                    <h3 class="font-tribal text-lg sm:text-xl font-bold text-red-400 flex items-center gap-2">
+                        <span>🗺️</span> Savaş Haritası: Rakip Kabileler
+                    </h3>
+                    <p class="text-xs text-stone-300">Anlaşmayı bozan kabilelerin mağaralarını yağmala!</p>
+                </div>
+                <button class="close-modal text-stone-400 hover:text-white text-xl font-bold px-2 cursor-pointer">✕</button>
+            </div>
+            <div id="tribeList" class="p-4 overflow-y-auto grid grid-cols-1 sm:grid-cols-2 gap-3.5"></div>
+        </div>
+    </div>
+
+    <div id="battleResultModal" class="hidden fixed inset-0 z-50 bg-black/85 flex items-center justify-center p-4">
+        <div class="parchment-panel rounded-2xl max-w-md w-full p-6 text-center">
+            <div id="resultStars" class="text-4xl mb-2 tracking-widest">⭐⭐⭐</div>
+            <h2 id="resultTitle" class="font-tribal text-2xl sm:text-3xl font-black text-amber-950 mb-1">ZAFER KAZANILDI!</h2>
+            <p id="resultSub" class="text-sm font-bold text-stone-700 mb-4">Kızıl Kaya Kabilesi mağaraları yağmalandı!</p>
+
+            <div class="bg-amber-950/15 border border-amber-900/30 rounded-xl p-4 mb-5">
+                <div class="text-xs font-extrabold uppercase text-amber-900 mb-2">Ele Geçirilen Ganimetler</div>
+                <div class="flex justify-center gap-4 text-base font-black text-stone-900">
+                    <div>🪨 <span id="lootStone">+0</span></div>
+                    <div>🪵 <span id="lootWood">+0</span></div>
+                    <div>💎 <span id="lootOre">+0</span></div>
+                </div>
+            </div>
+
+            <button id="returnVillageBtn" class="tribal-btn font-tribal font-bold text-white px-6 py-3 rounded-xl w-full text-base cursor-pointer">
+                🏕️ Kabilene Geri Dön
+            </button>
+        </div>
+    </div>
+
+    <div id="resetConfirmModal" class="hidden fixed inset-0 z-50 bg-black/85 flex items-center justify-center p-4">
+        <div class="parchment-panel rounded-2xl max-w-md w-full p-6 text-center">
+            <div class="text-4xl mb-2">⚠️</div>
+            <h2 class="font-tribal text-xl sm:text-2xl font-black text-amber-950 mb-2">KAYDI SIFIRLA & YENİ OYUN</h2>
+            <p class="text-sm font-bold text-stone-800 mb-5">
+                Mevcut kabilen, mağaraların ve tüm savaş ilerlemen silinecek. Sıfırdan yeni bir kabile kurmak istediğine emin misin?
+            </p>
+            <div class="flex items-center justify-center gap-3">
+                <button id="cancelResetBtn" class="bg-stone-700 hover:bg-stone-600 text-white font-bold px-5 py-2.5 rounded-xl cursor-pointer">
+                    Vazgeç
+                </button>
+                <button id="confirmResetBtn" class="tribal-btn-red text-white font-bold px-5 py-2.5 rounded-xl cursor-pointer">
+                    🔄 Evet, Sıfırla
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <audio id="bgMusicPlayer" loop preload="auto"></audio>
+
+<script>
+const SAVE_STORAGE_KEY = 'ilk_cag_kabile_savasi_v1';
+
+class TribalAudio {
+    constructor() {
+        this.ctx = null;
+        this.musicEnabled = true;
+        this.volume = 0.55;
+        this.isPlayingMusic = false;
+        this.useCustomAudio = false;
+        this.audioEl = document.getElementById('bgMusicPlayer');
+        this.loopTimer = null;
+        this.stepIndex = 0;
+        this.tempoBpm = 116;
+        this.melodySequence = [
+            { note: 0,      bass: 73.42,  dur: 0.5,  pizz: true,  drum: true  },
+            { note: 0,      bass: 87.31,  dur: 0.5,  pizz: true,  drum: false },
+            { note: 0,      bass: 110.00, dur: 0.5,  pizz: true,  drum: true  },
+            { note: 0,      bass: 116.54, dur: 0.5,  pizz: true,  drum: false },
+            { note: 293.66, bass: 73.42,  dur: 0.5,  pizz: true,  drum: true  },
+            { note: 329.63, bass: 110.00, dur: 0.5,  pizz: true,  drum: false },
+            { note: 349.23, bass: 73.42,  dur: 0.5,  pizz: true,  drum: true  },
+            { note: 392.00, bass: 110.00, dur: 0.25, pizz: true,  drum: false },
+            { note: 415.30, bass: 110.00, dur: 0.25, pizz: true,  drum: false },
+            { note: 440.00, bass: 73.42,  dur: 0.75, pizz: true,  drum: true  },
+            { note: 349.23, bass: 110.00, dur: 0.25, pizz: true,  drum: false },
+            { note: 293.66, bass: 73.42,  dur: 0.5,  pizz: true,  drum: true  },
+            { note: 0,      bass: 110.00, dur: 0.5,  pizz: true,  drum: false },
+            { note: 466.16, bass: 98.00,  dur: 0.5,  pizz: false, drum: true  },
+            { note: 440.00, bass: 116.54, dur: 0.5,  pizz: false, drum: false },
+            { note: 392.00, bass: 98.00,  dur: 0.5,  pizz: false, drum: true  },
+            { note: 349.23, bass: 116.54, dur: 0.5,  pizz: false, drum: false },
+            { note: 329.63, bass: 110.00, dur: 0.25, pizz: true,  drum: true  },
+            { note: 311.13, bass: 110.00, dur: 0.25, pizz: true,  drum: false },
+            { note: 293.66, bass: 110.00, dur: 0.25, pizz: true,  drum: false },
+            { note: 277.18, bass: 110.00, dur: 0.25, pizz: true,  drum: false },
+            { note: 293.66, bass: 73.42,  dur: 0.5,  pizz: true,  drum: true  },
+            { note: 0,      bass: 110.00, dur: 0.5,  pizz: true,  drum: false },
+            { note: 587.33, bass: 73.42,  dur: 0.25, pizz: false, drum: true  },
+            { note: 554.37, bass: 73.42,  dur: 0.25, pizz: false, drum: false },
+            { note: 587.33, bass: 110.00, dur: 0.5,  pizz: false, drum: false },
+            { note: 698.46, bass: 73.42,  dur: 0.5,  pizz: false, drum: true  },
+            { note: 659.25, bass: 110.00, dur: 0.5,  pizz: false, drum: false },
+            { note: 587.33, bass: 98.00,  dur: 0.5,  pizz: true,  drum: true  },
+            { note: 523.25, bass: 116.54, dur: 0.5,  pizz: true,  drum: false },
+            { note: 466.16, bass: 110.00, dur: 0.5,  pizz: true,  drum: true  },
+            { note: 440.00, bass: 110.00, dur: 0.5,  pizz: true,  drum: false },
+            { note: 392.00, bass: 110.00, dur: 0.25, pizz: false, drum: true  },
+            { note: 415.30, bass: 110.00, dur: 0.25, pizz: false, drum: false },
+            { note: 440.00, bass: 110.00, dur: 0.5,  pizz: false, drum: false },
+            { note: 220.00, bass: 55.00,  dur: 0.5,  pizz: true,  drum: true  },
+            { note: 293.66, bass: 73.42,  dur: 0.75, pizz: true,  drum: true  },
+            { note: 0,      bass: 0,      dur: 0.25, pizz: true,  drum: false }
+        ];
+
+        if (this.audioEl) {
+            this.audioEl.loop = true;
+            this.audioEl.addEventListener('ended', () => {
+                this.audioEl.currentTime = 0;
+                if (this.musicEnabled) {
+                    this.audioEl.play().catch(() => {});
+                }
+            });
+        }
+    }
+
+    init() {
+        if (!this.ctx) {
+            const AudioCtx = window.AudioContext || window.webkitAudioContext;
+            if (AudioCtx) this.ctx = new AudioCtx();
+        }
+        if (this.ctx && this.ctx.state === 'suspended') {
+            this.ctx.resume();
+        }
+    }
+
+    setVolume(val) {
+        this.volume = Math.max(0, Math.min(1, parseFloat(val)));
+        if (this.audioEl) {
+            this.audioEl.volume = this.volume;
+        }
+    }
+
+    loadCustomTrack(file) {
+        if (!file) return;
+        const url = URL.createObjectURL(file);
+        this.stopSynthLoop();
+        this.useCustomAudio = true;
+        this.audioEl.src = url;
+        this.audioEl.loop = true;
+        this.audioEl.volume = this.volume;
+        if (this.musicEnabled) {
+            this.audioEl.play().catch(() => {});
+        }
+    }
+
+    startMusic() {
+        this.init();
+        this.isPlayingMusic = true;
+        if (!this.musicEnabled) return;
+
+        if (this.useCustomAudio && this.audioEl.src) {
+            this.audioEl.volume = this.volume;
+            this.audioEl.loop = true;
+            this.audioEl.play().catch(() => {});
+        } else {
+            this.startSynthLoop();
+        }
+    }
+
+    stopMusic() {
+        this.isPlayingMusic = false;
+        if (this.audioEl) {
+            this.audioEl.pause();
+        }
+        this.stopSynthLoop();
+    }
+
+    toggleMusic() {
+        this.musicEnabled = !this.musicEnabled;
+        if (this.musicEnabled) {
+            this.startMusic();
+        } else {
+            this.stopMusic();
+        }
+        return this.musicEnabled;
+    }
+
+    startSynthLoop() {
+        if (this.loopTimer) return;
+        const scheduleNext = () => {
+            if (!this.musicEnabled || !this.isPlayingMusic || this.useCustomAudio) {
+                this.loopTimer = null;
+                return;
+            }
+            const step = this.melodySequence[this.stepIndex];
+            const beatSec = 60 / this.tempoBpm;
+            const durationSec = step.dur * beatSec;
+
+            this.playOrchestraStep(step, durationSec);
+            this.stepIndex = (this.stepIndex + 1) % this.melodySequence.length;
+            this.loopTimer = setTimeout(scheduleNext, durationSec * 1000);
+        };
+        scheduleNext();
+    }
+
+    stopSynthLoop() {
+        if (this.loopTimer) {
+            clearTimeout(this.loopTimer);
+            this.loopTimer = null;
+        }
+    }
+
+    playOrchestraStep(step, dur) {
+        if (!this.ctx || !this.musicEnabled || this.volume <= 0.01) return;
+        try {
+            const now = this.ctx.currentTime;
+            const masterVol = this.volume * 0.24;
+
+            if (step.note > 0) {
+                const leadOsc = this.ctx.createOscillator();
+                const leadFilter = this.ctx.createBiquadFilter();
+                const leadGain = this.ctx.createGain();
+
+                if (step.pizz) {
+                    leadOsc.type = 'triangle';
+                    leadOsc.frequency.setValueAtTime(step.note, now);
+                    leadOsc.frequency.exponentialRampToValueAtTime(step.note * 0.992, now + 0.14);
+                    leadFilter.type = 'bandpass';
+                    leadFilter.frequency.setValueAtTime(step.note * 2.2, now);
+                    leadFilter.Q.setValueAtTime(1.8, now);
+                    leadGain.gain.setValueAtTime(0.001, now);
+                    leadGain.gain.linearRampToValueAtTime(masterVol * 1.15, now + 0.012);
+                    leadGain.gain.exponentialRampToValueAtTime(0.001, now + Math.min(0.18, dur * 0.85));
+                } else {
+                    leadOsc.type = 'sine';
+                    leadOsc.frequency.setValueAtTime(step.note, now);
+                    const overtone = this.ctx.createOscillator();
+                    const overGain = this.ctx.createGain();
+                    overtone.type = 'triangle';
+                    overtone.frequency.setValueAtTime(step.note * 2, now);
+                    overGain.gain.setValueAtTime(masterVol * 0.35, now);
+                    overGain.gain.exponentialRampToValueAtTime(0.001, now + 0.09);
+                    overtone.connect(overGain);
+                    overGain.connect(this.ctx.destination);
+                    overtone.start(now);
+                    overtone.stop(now + 0.1);
+
+                    leadFilter.type = 'lowpass';
+                    leadFilter.frequency.setValueAtTime(2200, now);
+                    leadGain.gain.setValueAtTime(0.001, now);
+                    leadGain.gain.linearRampToValueAtTime(masterVol, now + 0.015);
+                    leadGain.gain.exponentialRampToValueAtTime(0.001, now + dur * 0.88);
+                }
+
+                leadOsc.connect(leadFilter);
+                leadFilter.connect(leadGain);
+                leadGain.connect(this.ctx.destination);
+                leadOsc.start(now);
+                leadOsc.stop(now + dur + 0.02);
+            }
+
+            if (step.bass > 0) {
+                const bassOsc = this.ctx.createOscillator();
+                const bassFilter = this.ctx.createBiquadFilter();
+                const bassGain = this.ctx.createGain();
+                bassOsc.type = 'sawtooth';
+                bassOsc.frequency.setValueAtTime(step.bass, now);
+                bassFilter.type = 'lowpass';
+                bassFilter.frequency.setValueAtTime(360, now);
+                bassFilter.frequency.exponentialRampToValueAtTime(140, now + 0.2);
+                bassGain.gain.setValueAtTime(0.001, now);
+                bassGain.gain.linearRampToValueAtTime(masterVol * 1.1, now + 0.015);
+                bassGain.gain.exponentialRampToValueAtTime(0.001, now + Math.min(0.24, dur * 0.9));
+                bassOsc.connect(bassFilter);
+                bassFilter.connect(bassGain);
+                bassGain.connect(this.ctx.destination);
+                bassOsc.start(now);
+                bassOsc.stop(now + 0.26);
+            }
+
+            if (step.drum) {
+                const woodOsc = this.ctx.createOscillator();
+                const woodGain = this.ctx.createGain();
+                woodOsc.type = 'sine';
+                woodOsc.frequency.setValueAtTime(420, now);
+                woodOsc.frequency.exponentialRampToValueAtTime(190, now + 0.055);
+                woodGain.gain.setValueAtTime(masterVol * 0.45, now);
+                woodGain.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
+                woodOsc.connect(woodGain);
+                woodGain.connect(this.ctx.destination);
+                woodOsc.start(now);
+                woodOsc.stop(now + 0.065);
+            }
+        } catch (e) {}
+    }
+
+    playTone(freq, type, duration, vol = 0.15, slideFreq = null) {
+        if (!this.musicEnabled || this.volume <= 0.01) return;
+        this.init();
+        if (!this.ctx) return;
+        try {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            const scaledVol = vol * Math.max(0.25, this.volume);
+            osc.type = type;
+            osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+            if (slideFreq) {
+                osc.frequency.exponentialRampToValueAtTime(slideFreq, this.ctx.currentTime + duration);
+            }
+            gain.gain.setValueAtTime(scaledVol, this.ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + duration);
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+            osc.start();
+            osc.stop(this.ctx.currentTime + duration);
+        } catch (e) {}
+    }
+    playDrum() { this.playTone(110, 'sine', 0.35, 0.28, 42); }
+    playCollect() {
+        this.playTone(520, 'triangle', 0.12, 0.15, 780);
+        setTimeout(() => this.playTone(780, 'triangle', 0.15, 0.12, 1040), 70);
+    }
+    playBuild() {
+        this.playTone(180, 'square', 0.12, 0.15, 90);
+        setTimeout(() => this.playTone(240, 'triangle', 0.18, 0.18, 320), 90);
+    }
+    playHit(isStone = false) {
+        if (isStone) this.playTone(150, 'sawtooth', 0.12, 0.14, 55);
+        else this.playTone(210, 'triangle', 0.1, 0.14, 75);
+    }
+    playHorn() {
+        this.playTone(146.8, 'sawtooth', 0.6, 0.18, 138);
+        setTimeout(() => this.playTone(196, 'sawtooth', 0.8, 0.2, 185), 250);
+    }
+}
+const sfx = new TribalAudio();
+
+const BUILDING_TYPES = {
+    chief_cave: { id: 'chief_cave', name: 'Şef Mağarası', icon: '👑', desc: 'Kabilenin kalbi. Geliştirdikçe yeni mağaraların kilidi açılır.', maxCount: 1, baseHp: 900, color: '#d97706', baseCost: { stone: 120, wood: 120, ore: 80 }, unlockTh: 1 },
+    ore_cave: { id: 'ore_cave', name: 'Maden Mağarası', icon: '💎', desc: 'Derin kayalardan çakmaktaşı ve maden çıkarır.', maxCount: 4, baseHp: 360, color: '#06b6d4', produces: 'ore', ratePerSec: 2.2, capacity: 120, baseCost: { stone: 45, wood: 45, ore: 15 }, unlockTh: 1 },
+    stone_cave: { id: 'stone_cave', name: 'Taş Mağarası', icon: '🪨', desc: 'Sert granit ve fırlatmalık taş blokları çıkarır.', maxCount: 4, baseHp: 400, color: '#78716c', produces: 'stone', ratePerSec: 2.8, capacity: 150, baseCost: { stone: 30, wood: 50, ore: 10 }, unlockTh: 1 },
+    wood_cave: { id: 'wood_cave', name: 'Odun & Sopa Mağarası', icon: '🪵', desc: 'Kalın odun ve savaş sopaları işlenir.', maxCount: 4, baseHp: 350, color: '#92400e', produces: 'wood', ratePerSec: 2.8, capacity: 150, baseCost: { stone: 50, wood: 30, ore: 10 }, unlockTh: 1 },
+    barracks_cave: { id: 'barracks_cave', name: 'Savaşçı Mağarası', icon: '🦴', desc: 'Ordu kapasitesini artıran eğitim mağarası.', maxCount: 3, baseHp: 450, color: '#dc2626', armyBonus: 8, baseCost: { stone: 60, wood: 60, ore: 30 }, unlockTh: 1 },
+    stone_tower: { id: 'stone_tower', name: 'Taş Atıcı Kule', icon: '🗼', desc: 'Düşman kabile savaşçılarına ağır taşlar fırlatır.', maxCount: 4, baseHp: 500, color: '#ef4444', range: 185, damage: 24, fireRate: 1.35, baseCost: { stone: 80, wood: 50, ore: 35 }, unlockTh: 1 }
+};
+
+const UNIT_TYPES = {
+    clubber: { id: 'clubber', name: 'Sopalı İlk İnsan', toolName: 'Ağır Meşe Sopası', icon: '🏏', desc: 'Kalın tahta sopasıyla yakın dövüşte etkilidir.', cost: { stone: 5, wood: 20, ore: 15 }, housing: 1, hp: 115, dmg: 22, speed: 62, range: 28, attackSpeed: 0.9, color: '#f59e0b', weaponType: 'club' },
+    stoner: { id: 'stoner', name: 'Taş Atıcı Avcı', toolName: 'Keskin Çakmaktaşı', icon: '🪨', desc: 'Uzaktan sivri taşlar fırlatır.', cost: { stone: 25, wood: 10, ore: 20 }, housing: 1, hp: 80, dmg: 26, speed: 55, range: 145, attackSpeed: 1.2, color: '#a8a29e', weaponType: 'stone' },
+    spearman: { id: 'spearman', name: 'Tahta Mızrakçı', toolName: 'Sivri Tahta Mızrak', icon: '🔱', desc: 'Savunma kulelerine ekstra hasar verir.', cost: { stone: 15, wood: 30, ore: 25 }, housing: 2, hp: 165, dmg: 34, speed: 58, range: 42, attackSpeed: 1.0, color: '#10b981', weaponType: 'spear' },
+    brute: { id: 'brute', name: 'Kaya Kıran Dev', toolName: 'Dev Kaya & Çift Sopa', icon: '🦍', desc: 'Çok yüksek cana sahiptir, önce kuleleri hedef alır.', cost: { stone: 45, wood: 35, ore: 45 }, housing: 3, hp: 420, dmg: 45, speed: 38, range: 32, attackSpeed: 1.4, prefersDefense: true, color: '#ef4444', weaponType: 'boulder' }
+};
+
+const ENEMY_TRIBES = [
+    { id: 'tribe_1', name: 'Kızıl Kaya Kabilesi', difficulty: 'Kolay • 1 Yıldız', desc: 'Az sayıda savunmaları var.', reward: { stone: 130, wood: 130, ore: 95 }, buildings: [ { type: 'chief_cave', x: 0.68, y: 0.50, level: 1 }, { type: 'ore_cave', x: 0.55, y: 0.34, level: 1 }, { type: 'stone_cave', x: 0.55, y: 0.66, level: 1 }, { type: 'wood_cave', x: 0.78, y: 0.35, level: 1 }, { type: 'stone_tower', x: 0.52, y: 0.50, level: 1 } ] },
+    { id: 'tribe_2', name: 'Gölge Orman Kabilesi', difficulty: 'Orta • 2 Yıldız', desc: 'Gizlenmiş mağaralar ve iki kule.', reward: { stone: 220, wood: 240, ore: 165 }, buildings: [ { type: 'chief_cave', x: 0.72, y: 0.50, level: 2 }, { type: 'ore_cave', x: 0.60, y: 0.28, level: 2 }, { type: 'ore_cave', x: 0.60, y: 0.72, level: 1 }, { type: 'wood_cave', x: 0.80, y: 0.32, level: 2 }, { type: 'stone_cave', x: 0.80, y: 0.68, level: 1 }, { type: 'stone_tower', x: 0.54, y: 0.38, level: 1 }, { type: 'stone_tower', x: 0.54, y: 0.62, level: 1 } ] },
+    { id: 'tribe_3', name: 'Büyük Mamut Kabilesi', difficulty: 'Zor • 3 Yıldız', desc: 'Zengin maden mağaralarına sahip güçlü kabile.', reward: { stone: 360, wood: 340, ore: 280 }, buildings: [ { type: 'chief_cave', x: 0.74, y: 0.50, level: 2 }, { type: 'ore_cave', x: 0.62, y: 0.25, level: 2 }, { type: 'ore_cave', x: 0.62, y: 0.75, level: 2 }, { type: 'stone_cave', x: 0.82, y: 0.30, level: 2 }, { type: 'wood_cave', x: 0.82, y: 0.70, level: 2 }, { type: 'barracks_cave', x: 0.70, y: 0.28, level: 2 }, { type: 'stone_tower', x: 0.52, y: 0.32, level: 2 }, { type: 'stone_tower', x: 0.50, y: 0.50, level: 2 }, { type: 'stone_tower', x: 0.52, y: 0.68, level: 2 } ] },
+    { id: 'tribe_4', name: 'Ateş Vadisi İmparatorluğu', difficulty: 'Destansı • 4 Yıldız', desc: 'Ana mağara kalesi!', reward: { stone: 550, wood: 550, ore: 450 }, buildings: [ { type: 'chief_cave', x: 0.76, y: 0.50, level: 3 }, { type: 'ore_cave', x: 0.64, y: 0.24, level: 3 }, { type: 'ore_cave', x: 0.64, y: 0.76, level: 3 }, { type: 'stone_cave', x: 0.84, y: 0.28, level: 2 }, { type: 'wood_cave', x: 0.84, y: 0.72, level: 2 }, { type: 'barracks_cave', x: 0.74, y: 0.24, level: 2 }, { type: 'barracks_cave', x: 0.74, y: 0.76, level: 2 }, { type: 'stone_tower', x: 0.50, y: 0.28, level: 2 }, { type: 'stone_tower', x: 0.48, y: 0.50, level: 3 }, { type: 'stone_tower', x: 0.50, y: 0.72, level: 2 }, { type: 'stone_tower', x: 0.66, y: 0.50, level: 2 } ] }
+];
+
+function createDefaultState() {
+    return {
+        mode: 'village',
+        resources: { stone: 160, wood: 160, ore: 120 },
+        army: { clubber: 3, stoner: 2, spearman: 1, brute: 0 },
+        tribeProgress: {},
+        totalStars: 0,
+        buildings: [
+            { uid: 1, type: 'chief_cave', x: 0.50, y: 0.46, level: 1, stored: 0 },
+            { uid: 2, type: 'ore_cave', x: 0.34, y: 0.34, level: 1, stored: 35 },
+            { uid: 3, type: 'stone_cave', x: 0.66, y: 0.34, level: 1, stored: 40 },
+            { uid: 4, type: 'wood_cave', x: 0.34, y: 0.62, level: 1, stored: 40 },
+            { uid: 5, type: 'barracks_cave', x: 0.66, y: 0.62, level: 1, stored: 0 },
+            { uid: 6, type: 'stone_tower', x: 0.50, y: 0.68, level: 1, stored: 0 }
+        ],
+        nextUid: 7,
+        selectedBuildingUid: null,
+        placingBuildingType: null,
+        decorations: [],
+        floatingTexts: [],
+        particles: [],
+        battle: {
+            active: false, isDefense: false, tribe: null, selectedUnitType: 'clubber',
+            availableTroops: {}, enemyBuildings: [], units: [], projectiles: [],
+            lootEarned: { stone: 0, wood: 0, ore: 0 }, totalInitialBuildings: 0,
+            destroyedCount: 0, chiefDestroyed: false
+        }
+    };
+}
+
+let state = createDefaultState();
+
+function saveGame(showNotification = false) {
+    try {
+        const saveData = {
+            version: 1, savedAt: Date.now(),
+            resources: { stone: Math.floor(state.resources.stone), wood: Math.floor(state.resources.wood), ore: Math.floor(state.resources.ore) },
+            army: { ...state.army },
+            buildings: state.buildings.map(b => ({ uid: b.uid, type: b.type, x: b.x, y: b.y, level: b.level, stored: b.stored || 0 })),
+            nextUid: state.nextUid, tribeProgress: { ...state.tribeProgress }, totalStars: state.totalStars || 0,
+            audioSettings: { musicEnabled: sfx.musicEnabled, volume: sfx.volume }
+        };
+        localStorage.setItem(SAVE_STORAGE_KEY, JSON.stringify(saveData));
+        if (showNotification) {
+            showToast('💾 Oyun Kaydedildi!', 'border-emerald-400 text-emerald-100');
+            sfx.playCollect();
+        }
+    } catch (e) {}
+}
+
+function getSavedGameData() {
+    try {
+        const raw = localStorage.getItem(SAVE_STORAGE_KEY);
+        if (!raw) return null;
+        return JSON.parse(raw);
+    } catch (e) { return null; }
+}
+
+function loadGame() {
+    const saved = getSavedGameData();
+    if (!saved) return false;
+    const fresh = createDefaultState();
+    fresh.resources = { stone: Number(saved.resources.stone) || 0, wood: Number(saved.resources.wood) || 0, ore: Number(saved.resources.ore) || 0 };
+    fresh.army = { clubber: Number(saved.army?.clubber) || 0, stoner: Number(saved.army?.stoner) || 0, spearman: Number(saved.army?.spearman) || 0, brute: Number(saved.army?.brute) || 0 };
+    fresh.buildings = saved.buildings.map(b => ({ uid: b.uid, type: b.type, x: b.x, y: b.y, level: b.level || 1, stored: b.stored || 0 }));
+    fresh.nextUid = saved.nextUid || (fresh.buildings.length + 1);
+    fresh.tribeProgress = saved.tribeProgress || {};
+    fresh.totalStars = saved.totalStars || 0;
+    if (saved.audioSettings) {
+        sfx.musicEnabled = saved.audioSettings.musicEnabled !== false;
+        sfx.setVolume(saved.audioSettings.volume ?? 0.55);
+        document.getElementById('volumeSlider').value = sfx.volume;
+        syncMusicButtonUI();
+    }
+    state = fresh;
+    generateDecorations();
+    updateUI();
+    return true;
+}
+
+function resetSavedGame() {
+    localStorage.removeItem(SAVE_STORAGE_KEY);
+    state = createDefaultState();
+    generateDecorations();
+    closeBuildingInspector();
+    if (state.mode === 'battle') returnToVillage();
+    updateUI();
+    saveGame(false);
+    showToast('🔄 Kayıt sıfırlandı! Yeni kabile maceran başladı.');
+}
+
+function syncMusicButtonUI() {
+    const iconEl = document.getElementById('musicIcon');
+    const labelEl = document.getElementById('musicLabel');
+    if (sfx.musicEnabled) { iconEl.textContent = '🔊'; labelEl.textContent = 'Müzik Açık'; }
+    else { iconEl.textContent = '🔇'; labelEl.textContent = 'Müzik Kapalı'; }
+}
+
+setInterval(() => { if (state.mode === 'village') saveGame(false); }, 30000);
+window.addEventListener('beforeunload', () => { saveGame(false); });
+
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+let width = 800, height = 600;
+
+function resizeCanvas() {
+    const parent = canvas.parentElement;
+    if (!parent) return;
+    width = parent.clientWidth;
+    height = parent.clientHeight;
+    canvas.width = width;
+    canvas.height = height;
+}
+window.addEventListener('resize', resizeCanvas);
+
+function generateDecorations() {
+    state.decorations = [
+        { x: 0.14, y: 0.20, kind: 'pine' }, { x: 0.18, y: 0.78, kind: 'pine' },
+        { x: 0.85, y: 0.22, kind: 'pine' }, { x: 0.86, y: 0.78, kind: 'pine' },
+        { x: 0.22, y: 0.48, kind: 'rock' }, { x: 0.78, y: 0.48, kind: 'rock' }, { x: 0.50, y: 0.20, kind: 'rock' }
+    ];
+}
+
+function showToast(msg, extraClass = 'border-amber-500/70 text-amber-100') {
+    const container = document.getElementById('toastContainer');
+    if (!container) return;
+    const el = document.createElement('div');
+    el.className = `stone-panel border-2 ${extraClass} px-4 py-2 rounded-xl text-xs sm:text-sm font-bold shadow-xl transition-all duration-300 text-center`;
+    el.textContent = msg;
+    container.appendChild(el);
+    setTimeout(() => { el.style.opacity = '0'; el.style.transform = 'translateY(-8px)'; setTimeout(() => el.remove(), 300); }, 2600);
+}
+
+function addFloatingText(x, y, text, color = '#fde047') {
+    state.floatingTexts.push({ x, y, text, color, vy: -32, life: 1.25 });
+}
+
+function spawnParticles(x, y, color, count = 8) {
+    for (let i = 0; i < count; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const speed = 30 + Math.random() * 80;
+        state.particles.push({ x, y, vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed, size: 3 + Math.random() * 4, color, life: 0.4 + Math.random() * 0.35 });
+    }
+}
+
+function getTownHallLevel() {
+    const th = state.buildings.find(b => b.type === 'chief_cave');
+    return th ? th.level : 1;
+}
+
+function getArmyHousing() {
+    let used = 0;
+    for (const [uKey, count] of Object.entries(state.army)) used += count * UNIT_TYPES[uKey].housing;
+    let max = 6;
+    state.buildings.forEach(b => { if (b.type === 'barracks_cave') max += BUILDING_TYPES.barracks_cave.armyBonus * b.level; });
+    return { used, max };
+}
+
+function canAfford(cost) {
+    return state.resources.stone >= (cost.stone || 0) && state.resources.wood >= (cost.wood || 0) && state.resources.ore >= (cost.ore || 0);
+}
+
+function spendResources(cost) {
+    state.resources.stone -= (cost.stone || 0);
+    state.resources.wood -= (cost.wood || 0);
+    state.resources.ore -= (cost.ore || 0);
+    updateUI();
+}
+
+function getUpgradeCost(b) {
+    const base = BUILDING_TYPES[b.type].baseCost;
+    const mult = Math.pow(1.6, b.level);
+    return { stone: Math.round(base.stone * mult), wood: Math.round(base.wood * mult), ore: Math.round(base.ore * mult) };
+}
+
+function updateUI() {
+    document.getElementById('resStone').textContent = Math.floor(state.resources.stone);
+    document.getElementById('resWood').textContent = Math.floor(state.resources.wood);
+    document.getElementById('resOre').textContent = Math.floor(state.resources.ore);
+    const housing = getArmyHousing();
+    document.getElementById('armyCount').textContent = `${housing.used}/${housing.max}`;
+    document.getElementById('townHallBadge').textContent = `Şef Sv. ${getTownHallLevel()}`;
+    if (state.selectedBuildingUid && state.mode === 'village') {
+        const b = state.buildings.find(item => item.uid === state.selectedBuildingUid);
+        if (b) openBuildingInspector(b);
+    }
+}
+
+function openBuildingInspector(b) {
+    state.selectedBuildingUid = b.uid;
+    const def = BUILDING_TYPES[b.type];
+    const insp = document.getElementById('buildingInspector');
+    insp.classList.remove('hidden');
+    document.getElementById('inspIcon').textContent = def.icon;
+    document.getElementById('inspName').textContent = def.name;
+    document.getElementById('inspLevel').textContent = `Seviye ${b.level}`;
+    document.getElementById('inspDesc').textContent = def.desc;
+
+    const statsEl = document.getElementById('inspStats');
+    const collectBtn = document.getElementById('inspCollectBtn');
+    const trainMenuBtn = document.getElementById('inspTrainMenuBtn');
+    collectBtn.classList.add('hidden');
+    trainMenuBtn.classList.add('hidden');
+
+    if (def.produces) {
+        const rate = (def.ratePerSec * (1 + (b.level - 1) * 0.35)).toFixed(1);
+        const cap = Math.round(def.capacity * (1 + (b.level - 1) * 0.4));
+        const resLabel = def.produces === 'ore' ? 'Maden 💎' : (def.produces === 'stone' ? 'Taş 🪨' : 'Tahta 🪵');
+        statsEl.textContent = `Üretim: +${rate}/sn • Depo: ${Math.floor(b.stored)}/${cap} ${resLabel}`;
+        if (b.stored >= 1) {
+            collectBtn.classList.remove('hidden');
+            collectBtn.textContent = `✨ Topla (+${Math.floor(b.stored)})`;
+        }
+    } else if (b.type === 'barracks_cave') {
+        statsEl.textContent = `Ordu Kapasitesi: +${def.armyBonus * b.level} Savaşçı`;
+        trainMenuBtn.classList.remove('hidden');
+    } else if (b.type === 'stone_tower') {
+        const dmg = Math.round(def.damage * (1 + (b.level - 1) * 0.3));
+        statsEl.textContent = `Savunma Hasarı: ${dmg} • Menzil: ${def.range}`;
+    } else {
+        statsEl.textContent = `Dayanıklılık: ${Math.round(def.baseHp * (1 + (b.level - 1) * 0.35))} Can`;
+    }
+
+    const upgCost = getUpgradeCost(b);
+    const upgBtn = document.getElementById('inspUpgradeBtn');
+    const maxLv = b.type === 'chief_cave' ? 5 : getTownHallLevel() + 1;
+    if (b.level >= maxLv) {
+        upgBtn.disabled = true;
+        document.getElementById('inspUpgradeCost').textContent = 'Maks. Seviye';
+    } else {
+        upgBtn.disabled = !canAfford(upgCost);
+        document.getElementById('inspUpgradeCost').textContent = `${upgCost.stone}🪨 ${upgCost.wood}🪵 ${upgCost.ore}💎`;
+    }
+}
+
+function closeBuildingInspector() {
+    state.selectedBuildingUid = null;
+    document.getElementById('buildingInspector').classList.add('hidden');
+}
+
+function collectFromBuilding(b) {
+    const def = BUILDING_TYPES[b.type];
+    if (!def.produces || b.stored < 1) return false;
+    const amount = Math.floor(b.stored);
+    state.resources[def.produces] += amount;
+    b.stored -= amount;
+    const icon = def.produces === 'ore' ? '💎' : (def.produces === 'stone' ? '🪨' : '🪵');
+    addFloatingText(b.x * width, b.y * height - 25, `+${amount} ${icon}`, '#67e8f9');
+    spawnParticles(b.x * width, b.y * height, def.color, 10);
+    sfx.playCollect();
+    updateUI();
+    return true;
+}
+
+function collectAllResources() {
+    let collectedAny = false;
+    state.buildings.forEach(b => { if (collectFromBuilding(b)) collectedAny = true; });
+    if (!collectedAny) showToast('Mağaralarda henüz toplanacak yeni kaynak birikmedi.');
+}
+
+function renderBuildModal() {
+    const list = document.getElementById('buildList');
+    list.innerHTML = '';
+    const thLv = getTownHallLevel();
+    Object.values(BUILDING_TYPES).forEach(def => {
+        if (def.id === 'chief_cave') return;
+        const currentCount = state.buildings.filter(b => b.type === def.id).length;
+        const maxAllowed = Math.min(def.maxCount, thLv + 1);
+        const affordable = canAfford(def.baseCost);
+        const limitReached = currentCount >= maxAllowed;
+
+        const card = document.createElement('div');
+        card.className = 'bg-stone-900/90 border border-stone-600 rounded-xl p-3.5 flex flex-col justify-between gap-3';
+        card.innerHTML = `
+            <div class="flex items-start gap-3">
+                <div class="w-11 h-11 rounded-xl bg-stone-800 border border-amber-500/40 flex items-center justify-center text-2xl shrink-0">${def.icon}</div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <h4 class="font-bold text-amber-300 text-sm">${def.name}</h4>
+                        <span class="text-[11px] bg-stone-800 px-2 py-0.5 rounded text-stone-300 font-bold">${currentCount}/${maxAllowed}</span>
+                    </div>
+                    <p class="text-xs text-stone-400 mt-1 leading-snug">${def.desc}</p>
+                </div>
+            </div>
+            <div class="flex items-center justify-between pt-2 border-t border-stone-800">
+                <div class="text-xs font-bold text-stone-200 flex gap-2"><span>${def.baseCost.stone}🪨</span><span>${def.baseCost.wood}🪵</span><span>${def.baseCost.ore}💎</span></div>
+                <button class="build-select-btn tribal-btn text-xs font-bold text-white px-3 py-1.5 rounded-lg cursor-pointer" data-type="${def.id}" ${(!affordable || limitReached) ? 'disabled' : ''}>${limitReached ? 'Sınır Dolu' : 'Yerleştir'}</button>
+            </div>`;
+        list.appendChild(card);
+    });
+    list.querySelectorAll('.build-select-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const type = btn.dataset.type;
+            document.getElementById('buildModal').classList.add('hidden');
+            state.placingBuildingType = type;
+            closeBuildingInspector();
+            showToast(`📍 ${BUILDING_TYPES[type].name} kurmak için köyde boş bir alana tıkla!`);
+        });
+    });
+}
+
+function renderTrainModal() {
+    const list = document.getElementById('trainList');
+    list.innerHTML = '';
+    const housing = getArmyHousing();
+    Object.values(UNIT_TYPES).forEach(u => {
+        const owned = state.army[u.id] || 0;
+        const hasSpace = (housing.used + u.housing) <= housing.max;
+        const affordable = canAfford(u.cost);
+
+        const card = document.createElement('div');
+        card.className = 'bg-stone-900/90 border border-stone-600 rounded-xl p-3.5 flex flex-col justify-between gap-2.5';
+        card.innerHTML = `
+            <div class="flex items-start gap-3">
+                <div class="w-12 h-12 rounded-xl bg-stone-800 border-2 border-amber-500/40 flex items-center justify-center text-2xl shrink-0">${u.icon}</div>
+                <div class="flex-1">
+                    <div class="flex items-center justify-between">
+                        <h4 class="font-bold text-amber-300 text-sm">${u.name}</h4>
+                        <span class="text-xs bg-amber-950 border border-amber-600/50 text-amber-200 px-2 py-0.5 rounded-full font-extrabold">Mevcut: ${owned}</span>
+                    </div>
+                    <div class="text-[11px] font-bold text-cyan-300 mt-0.5">Alet: ${u.toolName} • Nüfus: ${u.housing}🦴</div>
+                    <p class="text-xs text-stone-400 mt-1 leading-snug">${u.desc}</p>
+                </div>
+            </div>
+            <div class="flex items-center justify-between pt-2 border-t border-stone-800">
+                <div class="text-xs font-bold text-stone-200 flex gap-2"><span>${u.cost.stone}🪨</span><span>${u.cost.wood}🪵</span><span>${u.cost.ore}💎</span></div>
+                <button class="recruit-unit-btn tribal-btn text-xs font-bold text-white px-3.5 py-1.5 rounded-lg cursor-pointer" data-unit="${u.id}" ${(!affordable || !hasSpace) ? 'disabled' : ''}>${!hasSpace ? 'Kapasite Dolu' : '+1 Eğit'}</button>
+            </div>`;
+        list.appendChild(card);
+    });
+    list.querySelectorAll('.recruit-unit-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const uId = btn.dataset.unit;
+            const u = UNIT_TYPES[uId];
+            const housingNow = getArmyHousing();
+            if (!canAfford(u.cost)) return;
+            if (housingNow.used + u.housing > housingNow.max) { showToast('⚠️ Ordu kapasitesi dolu!'); return; }
+            spendResources(u.cost);
+            state.army[uId] = (state.army[uId] || 0) + 1;
+            sfx.playDrum();
+            showToast(`🦴 ${u.name} kabilene katıldı!`);
+            renderTrainModal();
+            updateUI();
+            saveGame(false);
+        });
+    });
+}
+
+function renderAttackModal() {
+    const list = document.getElementById('tribeList');
+    list.innerHTML = '';
+    const totalTroops = Object.values(state.army).reduce((a, b) => a + b, 0);
+
+    ENEMY_TRIBES.forEach(tribe => {
+        const earnedStars = state.tribeProgress[tribe.id] || 0;
+        const starDisplay = earnedStars > 0 ? '⭐'.repeat(earnedStars) + '☆'.repeat(3 - earnedStars) : '☆☆☆';
+
+        const card = document.createElement('div');
+        card.className = 'bg-stone-900/95 border-2 border-stone-700 hover:border-red-500/70 rounded-xl p-4 flex flex-col justify-between gap-3 transition-colors';
+        card.innerHTML = `
+            <div>
+                <div class="flex items-center justify-between gap-2 mb-1">
+                    <h4 class="font-tribal font-bold text-base text-amber-300">${tribe.name}</h4>
+                    <span class="text-[11px] font-bold bg-red-950 border border-red-700 text-red-200 px-2 py-0.5 rounded-full">${tribe.difficulty}</span>
+                </div>
+                <div class="text-xs font-bold text-amber-400 mb-1.5">Sefer İlerlemesi: ${starDisplay}</div>
+                <p class="text-xs text-stone-300 leading-relaxed mb-3">${tribe.desc}</p>
+                <div class="bg-black/40 rounded-lg p-2 flex items-center justify-between text-xs font-bold">
+                    <span class="text-stone-400">Olası Ganimet:</span>
+                    <div class="flex gap-2.5 text-amber-200"><span>🪨 ${tribe.reward.stone}</span><span>🪵 ${tribe.reward.wood}</span><span>💎 ${tribe.reward.ore}</span></div>
+                </div>
+            </div>
+            <button class="start-raid-btn tribal-btn-red text-white font-tribal font-bold text-xs sm:text-sm py-2.5 rounded-xl w-full cursor-pointer" data-tribe="${tribe.id}" ${totalTroops === 0 ? 'disabled' : ''}>${totalTroops === 0 ? 'Önce İlk İnsan Eğit!' : '⚔️ BU KABİLEYE SALDIR'}</button>`;
+        list.appendChild(card);
+    });
+    list.querySelectorAll('.start-raid-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const tribe = ENEMY_TRIBES.find(t => t.id === btn.dataset.tribe);
+            if (tribe) { document.getElementById('attackModal').classList.add('hidden'); startBattle(tribe, false); }
+        });
+    });
+}
+
+function startBattle(tribe, isDefense = false) {
+    state.mode = 'battle';
+    closeBuildingInspector();
+    state.placingBuildingType = null;
+    document.getElementById('villageFooter').classList.add('hidden');
+    document.getElementById('battleFooter').classList.remove('hidden');
+    document.getElementById('battleHudTop').classList.remove('hidden');
+    document.getElementById('enemyTribeName').textContent = isDefense ? 'Savunma: Düşman Baskını!' : tribe.name;
+
+    const bState = state.battle;
+    bState.active = true;
+    bState.isDefense = isDefense;
+    bState.tribe = tribe;
+    bState.lootEarned = { stone: 0, wood: 0, ore: 0 };
+    bState.units = [];
+    bState.projectiles = [];
+    bState.destroyedCount = 0;
+    bState.chiefDestroyed = false;
+
+    if (!isDefense) {
+        bState.availableTroops = { ...state.army };
+        const firstAvailable = Object.keys(UNIT_TYPES).find(k => (bState.availableTroops[k] || 0) > 0) || 'clubber';
+        bState.selectedUnitType = firstAvailable;
+        bState.enemyBuildings = tribe.buildings.map((eb, idx) => {
+            const def = BUILDING_TYPES[eb.type];
+            const maxHp = Math.round(def.baseHp * (1 + (eb.level - 1) * 0.35));
+            return { uid: 100 + idx, type: eb.type, x: eb.x, y: eb.y, level: eb.level, hp: maxHp, maxHp: maxHp, cooldown: 0, isPlayerBuilding: false };
+        });
+        bState.totalInitialBuildings = bState.enemyBuildings.length;
+        renderBattleUnitBar();
+    } else {
+        bState.availableTroops = {};
+        bState.enemyBuildings = state.buildings.map(pb => {
+            const def = BUILDING_TYPES[pb.type];
+            const maxHp = Math.round(def.baseHp * (1 + (pb.level - 1) * 0.35));
+            return { uid: pb.uid, type: pb.type, x: pb.x, y: pb.y, level: pb.level, hp: maxHp, maxHp: maxHp, cooldown: 0, isPlayerBuilding: true };
+        });
+        bState.totalInitialBuildings = bState.enemyBuildings.length;
+        const enemySquad = ['clubber', 'clubber', 'stoner', 'spearman', 'clubber', 'brute'];
+        enemySquad.forEach((uType, i) => { spawnBattleUnit(uType, 0.08 + (i % 2) * 0.05, 0.22 + i * 0.11, true); });
+        document.getElementById('battleUnitBar').innerHTML = `<div class="text-xs sm:text-sm font-bold text-amber-200 px-3 py-1">🛡️ Taş Atıcı Kulelerin köyünü savunuyor! Savaş alanına tıklayarak destek kaya atabilirsin!</div>`;
+    }
+    updateBattleHud();
+    sfx.playHorn();
+}
+
+function renderBattleUnitBar() {
+    const bar = document.getElementById('battleUnitBar');
+    bar.innerHTML = '';
+    Object.values(UNIT_TYPES).forEach(u => {
+        const count = state.battle.availableTroops[u.id] || 0;
+        const isSelected = state.battle.selectedUnitType === u.id;
+        const btn = document.createElement('button');
+        btn.className = `px-3 py-1.5 rounded-xl border-2 flex items-center gap-2 transition-all cursor-pointer shrink-0 ${isSelected ? 'bg-amber-800/90 border-amber-300 scale-105 shadow-lg' : 'bg-stone-900/90 border-stone-600 opacity-85 hover:opacity-100'} ${count === 0 ? 'opacity-40 grayscale' : ''}`;
+        btn.innerHTML = `<span class="text-xl sm:text-2xl">${u.icon}</span><div class="text-left"><div class="text-xs font-extrabold text-white leading-tight">${u.name}</div><div class="text-[11px] font-bold text-amber-300">Kalan: ${count}</div></div>`;
+        btn.addEventListener('click', () => { state.battle.selectedUnitType = u.id; renderBattleUnitBar(); });
+        bar.appendChild(btn);
+    });
+}
+
+function spawnBattleUnit(unitType, normX, normY, isEnemy = false) {
+    const def = UNIT_TYPES[unitType];
+    state.battle.units.push({ type: unitType, x: normX * width, y: normY * height, hp: def.hp, maxHp: def.hp, dmg: def.dmg, speed: def.speed, range: def.range, attackSpeed: def.attackSpeed, cooldown: 0.2, swingAnim: 0, isEnemy: isEnemy });
+    spawnParticles(normX * width, normY * height, isEnemy ? '#ef4444' : '#fbbf24', 6);
+    sfx.playDrum();
+}
+
+function updateBattleHud() {
+    const bState = state.battle;
+    const pct = bState.totalInitialBuildings > 0 ? Math.min(100, Math.round((bState.destroyedCount / bState.totalInitialBuildings) * 100)) : 0;
+    document.getElementById('destructionPct').textContent = `${pct}%`;
+    let stars = 0;
+    if (pct >= 50) stars++;
+    if (bState.chiefDestroyed) stars++;
+    if (pct === 100) stars++;
+    document.getElementById('battleStars').textContent = '⭐'.repeat(stars) + '☆'.repeat(3 - stars);
+}
+
+function endBattle(forcedRetreat = false) {
+    const bState = state.battle;
+    if (!bState.active) return;
+    bState.active = false;
+    const pct = bState.totalInitialBuildings > 0 ? Math.round((bState.destroyedCount / bState.totalInitialBuildings) * 100) : 0;
+    let stars = 0;
+    if (!bState.isDefense) {
+        if (pct >= 50) stars++;
+        if (bState.chiefDestroyed) stars++;
+        if (pct === 100) stars++;
+    } else {
+        const survivedPct = 100 - pct;
+        if (survivedPct >= 40) stars++;
+        if (!bState.chiefDestroyed) stars++;
+        if (survivedPct === 100) stars++;
+    }
+
+    state.resources.stone += bState.lootEarned.stone;
+    state.resources.wood += bState.lootEarned.wood;
+    state.resources.ore += bState.lootEarned.ore;
+
+    if (!bState.isDefense && bState.tribe && stars > 0) {
+        const prevStars = state.tribeProgress[bState.tribe.id] || 0;
+        if (stars > prevStars) state.tribeProgress[bState.tribe.id] = stars;
+        state.totalStars = Object.values(state.tribeProgress).reduce((a, b) => a + b, 0);
+    }
+
+    document.getElementById('resultStars').textContent = '⭐'.repeat(stars) + '☆'.repeat(3 - stars);
+    if (bState.isDefense) {
+        document.getElementById('resultTitle').textContent = stars > 0 ? 'KABİLE SAVUNULDU!' : 'KÖY YAĞMALANDI!';
+        document.getElementById('resultSub').textContent = stars > 0 ? 'Taş kulelerin düşmanı püskürttü!' : 'Daha fazla kule inşa etmelisin.';
+    } else {
+        document.getElementById('resultTitle').textContent = stars > 0 ? 'ZAFER KAZANILDI!' : (forcedRetreat ? 'GERİ ÇEKİLİNDİ' : 'BASKIN BAŞARISIZ');
+        document.getElementById('resultSub').textContent = `${bState.tribe.name} yıkım oranı: %${pct}`;
+    }
+    document.getElementById('lootStone').textContent = `+${bState.lootEarned.stone}`;
+    document.getElementById('lootWood').textContent = `+${bState.lootEarned.wood}`;
+    document.getElementById('lootOre').textContent = `+${bState.lootEarned.ore}`;
+    document.getElementById('battleResultModal').classList.remove('hidden');
+    updateUI();
+    saveGame(false);
+}
+
+function returnToVillage() {
+    state.mode = 'village';
+    state.battle.active = false;
+    document.getElementById('battleResultModal').classList.add('hidden');
+    document.getElementById('battleFooter').classList.add('hidden');
+    document.getElementById('battleHudTop').classList.add('hidden');
+    document.getElementById('villageFooter').classList.remove('hidden');
+    updateUI();
+}
+
+let lastTime = performance.now();
+function update(dt) {
+    state.buildings.forEach(b => {
+        const def = BUILDING_TYPES[b.type];
+        if (def.produces) {
+            const rate = def.ratePerSec * (1 + (b.level - 1) * 0.35);
+            const cap = def.capacity * (1 + (b.level - 1) * 0.4);
+            b.stored = Math.min(cap, b.stored + rate * dt);
+        }
+    });
+
+    for (let i = state.floatingTexts.length - 1; i >= 0; i--) {
+        const ft = state.floatingTexts[i];
+        ft.y += ft.vy * dt; ft.life -= dt;
+        if (ft.life <= 0) state.floatingTexts.splice(i, 1);
+    }
+    for (let i = state.particles.length - 1; i >= 0; i--) {
+        const p = state.particles[i];
+        p.x += p.vx * dt; p.y += p.vy * dt; p.life -= dt;
+        if (p.life <= 0) state.particles.splice(i, 1);
+    }
+    if (state.mode === 'battle' && state.battle.active) updateBattle(dt);
+}
+
+function updateBattle(dt) {
+    const bState = state.battle;
+    const aliveBuildings = bState.enemyBuildings.filter(b => b.hp > 0);
+    if (aliveBuildings.length === 0) { endBattle(false); return; }
+
+    for (let i = bState.units.length - 1; i >= 0; i--) {
+        const u = bState.units[i];
+        if (u.hp <= 0) { spawnParticles(u.x, u.y, '#dc2626', 10); bState.units.splice(i, 1); continue; }
+        if (u.cooldown > 0) u.cooldown -= dt;
+        if (u.swingAnim > 0) u.swingAnim = Math.max(0, u.swingAnim - dt * 4);
+
+        const uDef = UNIT_TYPES[u.type];
+        let candidates = aliveBuildings;
+        if (uDef.prefersDefense) {
+            const towers = aliveBuildings.filter(b => b.type === 'stone_tower');
+            if (towers.length > 0) candidates = towers;
+        }
+
+        let target = null;
+        let minDist = Infinity;
+        candidates.forEach(b => {
+            const d = Math.hypot(b.x * width - u.x, b.y * height - u.y);
+            if (d < minDist) { minDist = d; target = b; }
+        });
+
+        if (target) {
+            const tx = target.x * width, ty = target.y * height;
+            const dx = tx - u.x, dy = ty - u.y, dist = Math.hypot(dx, dy);
+            if (dist > u.range) {
+                u.x += (dx / dist) * u.speed * dt;
+                u.y += (dy / dist) * u.speed * dt;
+            } else if (u.cooldown <= 0) {
+                u.cooldown = u.attackSpeed;
+                u.swingAnim = 1;
+                let finalDmg = u.dmg;
+                if (uDef.weaponType === 'spear' && target.type === 'stone_tower') finalDmg *= 1.45;
+                if (uDef.weaponType === 'stone') {
+                    bState.projectiles.push({ x: u.x, y: u.y - 8, tx, ty, speed: 320, dmg: finalDmg, targetBuilding: target, fromEnemy: false, color: '#d6d3d1' });
+                } else {
+                    damageBuilding(target, finalDmg);
+                    sfx.playHit(false);
+                }
+            }
+        }
+    }
+
+    aliveBuildings.forEach(b => {
+        if (b.type !== 'stone_tower') return;
+        const def = BUILDING_TYPES.stone_tower;
+        if (b.cooldown > 0) b.cooldown -= dt;
+        const bx = b.x * width, by = b.y * height;
+        let targetUnit = null, minDist = def.range;
+        bState.units.forEach(u => {
+            const d = Math.hypot(u.x - bx, u.y - by);
+            if (d <= minDist) { minDist = d; targetUnit = u; }
+        });
+        if (targetUnit && b.cooldown <= 0) {
+            b.cooldown = def.fireRate;
+            const towerDmg = Math.round(def.damage * (1 + (b.level - 1) * 0.3));
+            bState.projectiles.push({ x: bx, y: by - 18, tx: targetUnit.x, ty: targetUnit.y, speed: 290, dmg: towerDmg, targetUnit: targetUnit, fromEnemy: true, color: '#ef4444' });
+        }
+    });
+
+    for (let i = bState.projectiles.length - 1; i >= 0; i--) {
+        const p = bState.projectiles[i];
+        const destX = p.targetUnit ? p.targetUnit.x : p.tx;
+        const destY = p.targetUnit ? p.targetUnit.y : p.ty;
+        const dx = destX - p.x, dy = destY - p.y, dist = Math.hypot(dx, dy);
+        if (dist < 14) {
+            if (p.targetUnit && p.targetUnit.hp > 0) { p.targetUnit.hp -= p.dmg; spawnParticles(p.x, p.y, '#fca5a5', 5); sfx.playHit(true); }
+            else if (p.targetBuilding && p.targetBuilding.hp > 0) { damageBuilding(p.targetBuilding, p.dmg); sfx.playHit(true); }
+            bState.projectiles.splice(i, 1);
+        } else {
+            p.x += (dx / dist) * p.speed * dt;
+            p.y += (dy / dist) * p.speed * dt;
+        }
+    }
+
+    if (!bState.isDefense) {
+        const remainingToDeploy = Object.values(bState.availableTroops).reduce((a, b) => a + b, 0);
+        if (remainingToDeploy === 0 && bState.units.length === 0) endBattle(false);
+    } else {
+        if (bState.units.length === 0) { bState.lootEarned = { stone: 90, wood: 90, ore: 75 }; endBattle(false); }
+    }
+}
+
+function damageBuilding(b, dmg) {
+    if (b.hp <= 0) return;
+    b.hp -= dmg;
+    const bx = b.x * width, by = b.y * height;
+    spawnParticles(bx, by, '#a8a29e', 5);
+    if (b.hp <= 0) {
+        b.hp = 0;
+        const bState = state.battle;
+        bState.destroyedCount++;
+        if (b.type === 'chief_cave') bState.chiefDestroyed = true;
+        if (!bState.isDefense && bState.tribe) {
+            const share = 1 / bState.totalInitialBuildings;
+            const gStone = Math.round(bState.tribe.reward.stone * share);
+            const gWood = Math.round(bState.tribe.reward.wood * share);
+            const gOre = Math.round(bState.tribe.reward.ore * share);
+            bState.lootEarned.stone += gStone;
+            bState.lootEarned.wood += gWood;
+            bState.lootEarned.ore += gOre;
+            addFloatingText(bx, by - 20, `+${gStone}🪨 +${gWood}🪵 +${gOre}💎`, '#fde047');
+        }
+        spawnParticles(bx, by, '#f59e0b', 18);
+        updateBattleHud();
+    }
+}
+
+function drawGround() {
+    const grad = ctx.createRadialGradient(width * 0.5, height * 0.5, 40, width * 0.5, height * 0.5, Math.max(width, height) * 0.75);
+    if (state.mode === 'village') { grad.addColorStop(0, '#3f5232'); grad.addColorStop(0.65, '#2d3b24'); grad.addColorStop(1, '#1e2618'); }
+    else { grad.addColorStop(0, '#4a3525'); grad.addColorStop(0.7, '#332419'); grad.addColorStop(1, '#1f1610'); }
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, width, height);
+
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.035)';
+    ctx.lineWidth = 1;
+    for (let x = 0; x < width; x += 48) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, height); ctx.stroke(); }
+    for (let y = 0; y < height; y += 48) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(width, y); ctx.stroke(); }
+
+    if (state.mode === 'battle' && !state.battle.isDefense) {
+        const zoneW = width * 0.36;
+        ctx.fillStyle = 'rgba(34, 197, 94, 0.08)';
+        ctx.fillRect(0, 0, zoneW, height);
+        ctx.strokeStyle = 'rgba(134, 239, 172, 0.45)';
+        ctx.lineWidth = 2;
+        ctx.setLineDash([8, 6]);
+        ctx.beginPath(); ctx.moveTo(zoneW, 0); ctx.lineTo(zoneW, height); ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.fillStyle = 'rgba(187, 247, 208, 0.65)';
+        ctx.font = 'bold 12px Nunito';
+        ctx.textAlign = 'center';
+        ctx.fillText('⚔️ ASKER ÇIKARMA ALANI', zoneW * 0.5, height - 16);
+    }
+
+    state.decorations.forEach(d => {
+        const dx = d.x * width, dy = d.y * height;
+        if (d.kind === 'pine') {
+            ctx.fillStyle = '#14532d'; ctx.beginPath(); ctx.moveTo(dx, dy - 22); ctx.lineTo(dx - 14, dy + 8); ctx.lineTo(dx + 14, dy + 8); ctx.closePath(); ctx.fill();
+            ctx.fillStyle = '#166534'; ctx.beginPath(); ctx.moveTo(dx, dy - 30); ctx.lineTo(dx - 11, dy - 4); ctx.lineTo(dx + 11, dy - 4); ctx.closePath(); ctx.fill();
+        } else {
+            ctx.fillStyle = '#57534e'; ctx.beginPath(); ctx.ellipse(dx, dy, 15, 10, 0, 0, Math.PI * 2); ctx.fill();
+        }
+    });
+
+    if (state.mode === 'village') {
+        const fx = width * 0.50, fy = height * 0.56;
+        ctx.fillStyle = 'rgba(245, 158, 11, 0.16)';
+        ctx.beginPath(); ctx.arc(fx, fy, 26 + Math.sin(performance.now() * 0.008) * 3, 0, Math.PI * 2); ctx.fill();
+        ctx.font = '18px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('🔥', fx, fy);
+    }
+}
+
+function drawCaveBuilding(b, isBattle = false) {
+    const def = BUILDING_TYPES[b.type];
+    const bx = b.x * width, by = b.y * height;
+    const radius = b.type === 'chief_cave' ? 34 : 26;
+
+    if (isBattle && b.hp <= 0) {
+        ctx.fillStyle = '#1c1917'; ctx.beginPath(); ctx.ellipse(bx, by + 6, radius, radius * 0.65, 0, 0, Math.PI * 2); ctx.fill();
+        ctx.font = '18px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('💥', bx, by + 4);
+        return;
+    }
+
+    if (!isBattle && state.selectedBuildingUid === b.uid) {
+        ctx.strokeStyle = '#fde047'; ctx.lineWidth = 3;
+        ctx.beginPath(); ctx.ellipse(bx, by + 6, radius + 8, (radius + 8) * 0.72, 0, 0, Math.PI * 2); ctx.stroke();
+        if (def.range) {
+            ctx.strokeStyle = 'rgba(239, 68, 68, 0.35)'; ctx.lineWidth = 1.5;
+            ctx.beginPath(); ctx.arc(bx, by, def.range, 0, Math.PI * 2); ctx.stroke();
+        }
+    }
+
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.42)';
+    ctx.beginPath(); ctx.ellipse(bx, by + radius * 0.55, radius * 1.05, radius * 0.55, 0, 0, Math.PI * 2); ctx.fill();
+
+    if (b.type === 'stone_tower') {
+        ctx.fillStyle = '#57534e'; ctx.strokeStyle = '#292524'; ctx.lineWidth = 2.5;
+        ctx.beginPath(); ctx.moveTo(bx - 16, by + 16); ctx.lineTo(bx - 11, by - 22); ctx.lineTo(bx + 11, by - 22); ctx.lineTo(bx + 16, by + 16); ctx.closePath(); ctx.fill(); ctx.stroke();
+        ctx.fillStyle = '#78716c'; ctx.fillRect(bx - 14, by - 26, 28, 7);
+        ctx.font = '16px sans-serif'; ctx.textAlign = 'center'; ctx.fillText('🪨', bx, by - 31);
+    } else {
+        const rockGrad = ctx.createRadialGradient(bx - 6, by - 10, 4, bx, by, radius);
+        rockGrad.addColorStop(0, '#78716c'); rockGrad.addColorStop(0.7, '#44403c'); rockGrad.addColorStop(1, '#292524');
+        ctx.fillStyle = rockGrad; ctx.strokeStyle = def.color; ctx.lineWidth = 2.5;
+        ctx.beginPath(); ctx.arc(bx, by + 4, radius, Math.PI, 0, false); ctx.lineTo(bx + radius, by + 14); ctx.lineTo(bx - radius, by + 14); ctx.closePath(); ctx.fill(); ctx.stroke();
+
+        ctx.fillStyle = '#0c0a09'; ctx.beginPath(); ctx.arc(bx, by + 14, radius * 0.46, Math.PI, 0, false); ctx.fill();
+        ctx.font = b.type === 'chief_cave' ? '22px sans-serif' : '17px sans-serif';
+        ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(def.icon, bx, by - 11);
+    }
+
+    ctx.fillStyle = 'rgba(28, 25, 23, 0.88)';
+    ctx.beginPath(); ctx.roundRect(bx - 22, by + 17, 44, 15, 5); ctx.fill();
+    ctx.fillStyle = '#fef3c7'; ctx.font = 'bold 10px Nunito'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText(`Sv.${b.level}`, bx, by + 24.5);
+
+    if (!isBattle && def.produces && b.stored >= 5) {
+        const bounce = Math.sin(performance.now() * 0.006) * 3;
+        const bubbleY = by - radius - 14 + bounce;
+        ctx.fillStyle = '#fef3c7'; ctx.strokeStyle = '#92400e'; ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.roundRect(bx - 20, bubbleY - 11, 40, 22, 10); ctx.fill(); ctx.stroke();
+        const resIcon = def.produces === 'ore' ? '💎' : (def.produces === 'stone' ? '🪨' : '🪵');
+        ctx.fillStyle = '#291d12'; ctx.font = 'bold 11px Nunito'; ctx.fillText(`${resIcon}${Math.floor(b.stored)}`, bx, bubbleY);
+    }
+
+    if (isBattle && b.hp < b.maxHp) {
+        const barW = 46, barH = 6, pct = Math.max(0, b.hp / b.maxHp);
+        ctx.fillStyle = '#1c1917'; ctx.fillRect(bx - barW / 2, by - radius - 14, barW, barH);
+        ctx.fillStyle = b.isPlayerBuilding ? '#22c55e' : '#ef4444';
+        ctx.fillRect(bx - barW / 2 + 1, by - radius - 13, (barW - 2) * pct, barH - 2);
+    }
+}
+
+function drawBattleUnits() {
+    state.battle.units.forEach(u => {
+        const def = UNIT_TYPES[u.type];
+        const r = u.type === 'brute' ? 15 : 11;
+        ctx.fillStyle = 'rgba(0,0,0,0.4)'; ctx.beginPath(); ctx.ellipse(u.x, u.y + r * 0.8, r, r * 0.5, 0, 0, Math.PI * 2); ctx.fill();
+
+        ctx.fillStyle = u.isEnemy ? '#991b1b' : def.color; ctx.strokeStyle = '#1c1917'; ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.arc(u.x, u.y, r, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+
+        ctx.fillStyle = '#fed7aa'; ctx.beginPath(); ctx.arc(u.x, u.y - r * 0.65, r * 0.55, 0, Math.PI * 2); ctx.fill();
+
+        const swing = u.swingAnim * 0.9;
+        ctx.save();
+        ctx.translate(u.x + r * 0.6, u.y - 2);
+        ctx.rotate(-0.4 + swing);
+        if (def.weaponType === 'club' || def.weaponType === 'boulder') { ctx.fillStyle = '#78350f'; ctx.fillRect(0, -14, 4, 16); }
+        else if (def.weaponType === 'spear') {
+            ctx.fillStyle = '#b45309'; ctx.fillRect(0, -20, 2.5, 24);
+            ctx.fillStyle = '#e7e5e4'; ctx.beginPath(); ctx.moveTo(1.25, -24); ctx.lineTo(-2, -19); ctx.lineTo(4.5, -19); ctx.fill();
+        }
+        ctx.restore();
+
+        if (u.hp < u.maxHp) {
+            const bw = 26;
+            ctx.fillStyle = '#000'; ctx.fillRect(u.x - bw / 2, u.y - r - 12, bw, 4);
+            ctx.fillStyle = u.isEnemy ? '#ef4444' : '#4ade80'; ctx.fillRect(u.x - bw / 2, u.y - r - 12, bw * (u.hp / u.maxHp), 4);
+        }
+    });
+
+    state.battle.projectiles.forEach(p => {
+        ctx.fillStyle = p.color; ctx.beginPath(); ctx.arc(p.x, p.y, 5, 0, Math.PI * 2); ctx.fill();
+        ctx.strokeStyle = '#1c1917'; ctx.lineWidth = 1.5; ctx.stroke();
+    });
+}
+
+function render() {
+    ctx.clearRect(0, 0, width, height);
+    drawGround();
+
+    if (state.mode === 'village') {
+        const sorted = [...state.buildings].sort((a, b) => a.y - b.y);
+        sorted.forEach(b => drawCaveBuilding(b, false));
+        if (state.placingBuildingType) {
+            ctx.fillStyle = 'rgba(251, 191, 36, 0.14)'; ctx.fillRect(0, 0, width, height);
+            ctx.fillStyle = '#fde047'; ctx.font = 'bold 14px Nunito'; ctx.textAlign = 'center';
+            ctx.fillText(`🔨 ${BUILDING_TYPES[state.placingBuildingType].name} kurmak için istediğin yere dokun (İptal için sağ tık)`, width * 0.5, 30);
+        }
+    } else if (state.mode === 'battle') {
+        const sorted = [...state.battle.enemyBuildings].sort((a, b) => a.y - b.y);
+        sorted.forEach(b => drawCaveBuilding(b, true));
+        drawBattleUnits();
+    }
+
+    state.particles.forEach(p => {
+        ctx.globalAlpha = Math.max(0, p.life * 1.5);
+        ctx.fillStyle = p.color; ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fill();
+    });
+    ctx.globalAlpha = 1;
+
+    state.floatingTexts.forEach(ft => {
+        ctx.globalAlpha = Math.min(1, ft.life);
+        ctx.font = 'extrabold 13px Nunito'; ctx.textAlign = 'center';
+        ctx.fillStyle = '#000'; ctx.fillText(ft.text, ft.x + 1, ft.y + 1);
+        ctx.fillStyle = ft.color; ctx.fillText(ft.text, ft.x, ft.y);
+    });
+    ctx.globalAlpha = 1;
+}
+
+function gameLoop(now) {
+    const dt = Math.min(0.05, (now - lastTime) / 1000);
+    lastTime = now;
+    update(dt);
+    render();
+    requestAnimationFrame(gameLoop);
+}
+
+function handleCanvasPointerDown(clientX, clientY) {
+    const rect = canvas.getBoundingClientRect();
+    const x = clientX - rect.left, y = clientY - rect.top;
+    const normX = x / width, normY = y / height;
+
+    if (state.mode === 'village') {
+        if (state.placingBuildingType) {
+            const type = state.placingBuildingType, def = BUILDING_TYPES[type];
+            if (normX < 0.12 || normX > 0.88 || normY < 0.16 || normY > 0.84) { showToast('⚠️ Kabile sınırlarının içine yerleştirmelisin!'); return; }
+            const tooClose = state.buildings.some(b => Math.hypot((b.x - normX) * width, (b.y - normY) * height) < 62);
+            if (tooClose) { showToast('⚠️ Başka bir mağaraya çok yakın!'); return; }
+            if (!canAfford(def.baseCost)) { showToast('⚠️ Yeterli kaynağın yok!'); state.placingBuildingType = null; return; }
+
+            spendResources(def.baseCost);
+            const newB = { uid: state.nextUid++, type: type, x: normX, y: normY, level: 1, stored: 0 };
+            state.buildings.push(newB);
+            state.placingBuildingType = null;
+            spawnParticles(x, y, '#fbbf24', 14);
+            sfx.playBuild();
+            showToast(`✅ ${def.name} inşa edildi!`);
+            openBuildingInspector(newB);
+            updateUI();
+            saveGame(false);
+            return;
+        }
+
+        let clickedBuilding = null;
+        for (let i = state.buildings.length - 1; i >= 0; i--) {
+            const b = state.buildings[i];
+            if (Math.hypot(b.x * width - x, b.y * height - y) <= 36) { clickedBuilding = b; break; }
+        }
+        if (clickedBuilding) { collectFromBuilding(clickedBuilding); openBuildingInspector(clickedBuilding); }
+        else closeBuildingInspector();
+    } else if (state.mode === 'battle' && state.battle.active) {
+        const bState = state.battle;
+        if (!bState.isDefense) {
+            if (normX <= 0.36) {
+                const uType = bState.selectedUnitType;
+                if ((bState.availableTroops[uType] || 0) > 0) {
+                    bState.availableTroops[uType]--;
+                    state.army[uType] = Math.max(0, (state.army[uType] || 0) - 1);
+                    spawnBattleUnit(uType, normX, normY, false);
+                    renderBattleUnitBar();
+                    updateUI();
+                } else { showToast('⚠️ Bu savaşçı türünden kalmadı!'); }
+            } else { showToast('💡 Savaşçıları sol taraftaki yeşil çıkarma alanına bırak!'); }
+        } else {
+            bState.units.forEach(u => {
+                if (Math.hypot(u.x - x, u.y - y) < 48) { u.hp -= 35; spawnParticles(x, y, '#f59e0b', 8); sfx.playHit(true); }
+            });
+        }
+    }
+}
+
+canvas.addEventListener('pointerdown', (e) => {
+    if (e.button === 2) { state.placingBuildingType = null; return; }
+    handleCanvasPointerDown(e.clientX, e.clientY);
+});
+canvas.addEventListener('contextmenu', (e) => { e.preventDefault(); state.placingBuildingType = null; });
+
+document.getElementById('startGameBtn').addEventListener('click', () => {
+    document.getElementById('storyModal').classList.add('hidden');
+    state = createDefaultState();
+    generateDecorations();
+    updateUI();
+    saveGame(false);
+    sfx.startMusic();
+    sfx.playDrum();
+    showToast('🔥 Yeni kabilen kuruldu! Güneş Mağarası Kabilesi emrinde Şef!');
+});
+
+document.getElementById('continueGameBtn').addEventListener('click', () => {
+    document.getElementById('storyModal').classList.add('hidden');
+    loadGame();
+    sfx.startMusic();
+    sfx.playCollect();
+    showToast('📜 Kayıtlı kabilene hoş geldin Şef!');
+});
+
+document.getElementById('saveGameBtn').addEventListener('click', () => saveGame(true));
+document.getElementById('resetSaveBtn').addEventListener('click', () => document.getElementById('resetConfirmModal').classList.remove('hidden'));
+document.getElementById('cancelResetBtn').addEventListener('click', () => document.getElementById('resetConfirmModal').classList.add('hidden'));
+document.getElementById('confirmResetBtn').addEventListener('click', () => {
+    document.getElementById('resetConfirmModal').classList.add('hidden');
+    resetSavedGame();
+});
+
+document.getElementById('musicToggleBtn').addEventListener('click', () => {
+    sfx.toggleMusic();
+    syncMusicButtonUI();
+    saveGame(false);
+});
+
+document.getElementById('volumeSlider').addEventListener('input', (e) => {
+    sfx.setVolume(e.target.value);
+    if (sfx.volume > 0 && !sfx.musicEnabled) { sfx.musicEnabled = true; sfx.startMusic(); syncMusicButtonUI(); }
+    saveGame(false);
+});
+
+document.getElementById('customAudioInput').addEventListener('change', (e) => {
+    const file = e.target.files && e.target.files[0];
+    if (file) {
+        sfx.loadCustomTrack(file);
+        sfx.musicEnabled = true;
+        syncMusicButtonUI();
+        showToast(`🎵 "${file.name}" döngülü arka plan müziği olarak ayarlandı!`);
+    }
+});
+
+document.getElementById('openBuildModalBtn').addEventListener('click', () => { renderBuildModal(); document.getElementById('buildModal').classList.remove('hidden'); });
+document.getElementById('openTrainModalBtn').addEventListener('click', () => { renderTrainModal(); document.getElementById('trainModal').classList.remove('hidden'); });
+document.getElementById('openAttackModalBtn').addEventListener('click', () => { renderAttackModal(); document.getElementById('attackModal').classList.remove('hidden'); });
+document.getElementById('collectAllBtn').addEventListener('click', collectAllResources);
+document.getElementById('defendWaveBtn').addEventListener('click', () => startBattle(null, true));
+document.getElementById('closeInspectorBtn').addEventListener('click', closeBuildingInspector);
+
+document.getElementById('inspCollectBtn').addEventListener('click', () => {
+    const b = state.buildings.find(item => item.uid === state.selectedBuildingUid);
+    if (b) collectFromBuilding(b);
+});
+document.getElementById('inspTrainMenuBtn').addEventListener('click', () => {
+    closeBuildingInspector();
+    renderTrainModal();
+    document.getElementById('trainModal').classList.remove('hidden');
+});
+document.getElementById('inspUpgradeBtn').addEventListener('click', () => {
+    const b = state.buildings.find(item => item.uid === state.selectedBuildingUid);
+    if (!b) return;
+    const cost = getUpgradeCost(b);
+    if (!canAfford(cost)) return;
+    spendResources(cost);
+    b.level++;
+    spawnParticles(b.x * width, b.y * height, '#fde047', 16);
+    sfx.playBuild();
+    showToast(`⬆️ ${BUILDING_TYPES[b.type].name} Seviye ${b.level} oldu!`);
+    openBuildingInspector(b);
+    updateUI();
+    saveGame(false);
+});
+
+document.getElementById('retreatBtn').addEventListener('click', () => endBattle(true));
+document.getElementById('returnVillageBtn').addEventListener('click', returnToVillage);
+document.querySelectorAll('.close-modal').forEach(btn => {
+    btn.addEventListener('click', () => btn.closest('.fixed').classList.add('hidden'));
+});
+
+window.onload = function () {
+    resizeCanvas();
+    generateDecorations();
+    const saved = getSavedGameData();
+    if (saved) {
+        const th = saved.buildings.find(b => b.type === 'chief_cave');
+        const thLv = th ? th.level : 1;
+        const stars = saved.totalStars || 0;
+        document.getElementById('savedGameBanner').classList.remove('hidden');
+        document.getElementById('savedGameSummary').textContent = `Şef Sv. ${thLv} • ${stars}⭐`;
+        document.getElementById('continueGameBtn').classList.remove('hidden');
+        document.getElementById('startBtnLabel').textContent = 'YENİ HİKAYE BAŞLAT';
+    }
+    updateUI();
+    requestAnimationFrame(gameLoop);
+};
+</script>
+</body>
+</html>
