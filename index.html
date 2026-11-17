@@ -32,10 +32,7 @@ header{
  color:#a855f7;
 }
 
-nav{
- display:flex;
- gap:22px;
-}
+nav{display:flex;gap:20px}
 
 nav a{
  color:#ddd;
@@ -43,7 +40,7 @@ nav a{
  font-weight:bold;
 }
 
-nav a:hover{color:#a855f7}
+nav a:hover{color:#c084fc}
 
 input{
  padding:13px;
@@ -57,32 +54,19 @@ input{
 .hero{
  margin:25px auto;
  max-width:1400px;
- min-height:300px;
+ min-height:280px;
  border-radius:18px;
  padding:45px;
- display:flex;
- align-items:center;
- background:
- linear-gradient(90deg,#090a14 5%,#21133e 55%,#111326);
+ background:linear-gradient(110deg,#090a14,#35205d,#111326);
  border:1px solid #393052;
 }
 
 .hero h1{
  font-size:42px;
  color:#c084fc;
- margin-bottom:12px;
 }
 
-.hero p{
- color:#ddd;
- font-size:18px;
-}
-
-.hero button{
- width:auto;
- padding:15px 30px;
- margin-top:12px;
-}
+.hero p{color:#ddd;font-size:18px}
 
 main{
  max-width:1400px;
@@ -105,10 +89,6 @@ main{
  color:white;
 }
 
-h2{
- font-size:28px;
-}
-
 .games{
  display:grid;
  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
@@ -129,6 +109,13 @@ h2{
  box-shadow:0 8px 25px #7e22ce33;
 }
 
+.cover-img{
+ width:100%;
+ height:190px;
+ object-fit:cover;
+ display:block;
+}
+
 .cover{
  height:190px;
  display:flex;
@@ -138,18 +125,11 @@ h2{
  background:linear-gradient(135deg,#57318c,#171d39);
 }
 
-.cover.zombie{
- background:linear-gradient(135deg,#741d36,#17121e);
-}
-
 .info{padding:18px}
 
-.info h3{
- font-size:21px;
- margin-top:0;
-}
+.info h3{font-size:21px;margin-top:0}
 
-.info p{color:#bbb}
+.info p{color:#bbb;min-height:35px}
 
 button{
  width:100%;
@@ -179,7 +159,7 @@ footer{
  header{justify-content:center}
  nav{width:100%;justify-content:center}
  input{width:100%}
- .hero{padding:25px;min-height:240px}
+ .hero{padding:25px}
  .hero h1{font-size:30px}
  .hero p{font-size:15px}
 }
@@ -200,40 +180,35 @@ footer{
 </header>
 
 <section class="hero">
- <div>
-  <h1>KANKA GAMES</h1>
-  <h2>Oyun Dünyasına Hoş Geldin!</h2>
-  <p>En sevdiğin oyunları keşfet ve ücretsiz oyna.</p>
-  <button onclick="document.getElementById('games').scrollIntoView({behavior:'smooth'})">
-   ▶️ HEMEN OYNA
-  </button>
- </div>
+ <h1>KANKA GAMES</h1>
+ <h2>Oyun Dünyasına Hoş Geldin!</h2>
+ <p>En sevdiğin oyunları keşfet ve ücretsiz oyna.</p>
+ <button style="max-width:220px"
+ onclick="document.getElementById('games').scrollIntoView({behavior:'smooth'})">
+ ▶️ HEMEN OYNA
+ </button>
 </section>
 
 <main>
+
  <div class="categories">
   <div class="category">⭐ Tümü</div>
   <div class="category">⚔️ Savaş</div>
   <div class="category">🧟 Zombi</div>
   <div class="category">🏕️ Hayatta Kalma</div>
-  <div class="category">🚀 Macera</div>
+  <div class="category">⛏️ Macera</div>
  </div>
 
  <h2>🔥 Popüler Oyunlar</h2>
 
  <div class="games" id="games">
 
+  <!-- İLK ÇAĞ -->
   <div class="game" data-name="ilk çağ kabileler savaşı">
-   <div class="cover">⚔️<div class="game" data-name="minecraft java edition">
- <div class="cover">⛏️</div>
- <div class="info">
-  <h3>Minecraft Java Edition</h3>
-  <p>En son sürüm: 26.3</p>
-  <button onclick="window.open('https://www.minecraft.net/tr-tr/download','_blank')">
-   ▶️ MINECRAFT'I İNDİR
-  </button>
- </div>
-</div>
+   <img class="cover-img"
+   src="ilk-cag-kapak.jpg"
+   alt="İlk Çağ Kabileler Savaşı">
+
    <div class="info">
     <h3>İlk Çağ Kabileler Savaşı</h3>
     <p>Kabilelerin savaşına katıl!</p>
@@ -243,6 +218,50 @@ footer{
    </div>
   </div>
 
+  <!-- ZOMBİ -->
   <div class="game" data-name="zombi hayatta kalma">
-   <div class="cover zombie">🧟</div>
-   <div class="…
+   <img class="cover-img"
+   src="zombi-kapak.jpg"
+   alt="Zombi Hayatta Kalma">
+
+   <div class="info">
+    <h3>Zombi Hayatta Kalma</h3>
+    <p>Zombi istilasına karşı hayatta kal!</p>
+    <button onclick="alert('Zombi oyunu yakında eklenecek!')">
+     ▶️ YAKINDA
+    </button>
+   </div>
+  </div>
+
+  <!-- MINECRAFT JAVA -->
+  <div class="game" data-name="minecraft minecraft java edition">
+   <div class="cover">⛏️</div>
+
+   <div class="info">
+    <h3>Minecraft Java Edition</h3>
+    <p>Hayalindeki dünyayı keşfet ve inşa et!</p>
+    <button onclick="window.open('https://www.minecraft.net/tr-tr/download','_blank')">
+     ▶️ MINECRAFT'I İNDİR
+    </button>
+   </div>
+  </div>
+
+ </div>
+</main>
+
+<footer>
+ © 2026 Kanka Games | Ücretsiz Oyun Platformu
+</footer>
+
+<script>
+document.getElementById("search").addEventListener("input",function(){
+ let q=this.value.toLowerCase();
+
+ document.querySelectorAll(".game").forEach(game=>{
+  game.style.display=game.dataset.name.includes(q)?"block":"none";
+ });
+});
+</script>
+
+</body>
+</html>
