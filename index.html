@@ -4,81 +4,221 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Kanka Games</title>
+
 <style>
 *{box-sizing:border-box}
+
 body{
- margin:0;background:#10111b;color:white;
+ margin:0;
+ background:#090a14;
+ color:white;
  font-family:Arial,sans-serif;
 }
+
 header{
- background:#191a2b;padding:22px 7%;
- display:flex;justify-content:space-between;
- align-items:center;flex-wrap:wrap;gap:15px;
- border-bottom:1px solid #39334f;
+ background:#10111e;
+ padding:18px 5%;
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ flex-wrap:wrap;
+ gap:15px;
+ border-bottom:1px solid #29243e;
 }
-.logo{font-size:27px;font-weight:bold;color:#a78bfa}
-input{
- padding:13px;border:1px solid #444;
- border-radius:10px;background:#25263a;
- color:white;width:230px;
+
+.logo{
+ font-size:27px;
+ font-weight:900;
+ color:#a855f7;
 }
-.hero{
- margin:30px auto;padding:45px 25px;
- max-width:1100px;border-radius:20px;
- background:linear-gradient(120deg,#33245e,#171a32);
-}
-.hero h1{font-size:38px}
-.hero p{color:#ccc}
-main{max-width:1100px;margin:auto;padding:20px}
-.games{
- display:grid;
- grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+
+nav{
+ display:flex;
  gap:22px;
 }
+
+nav a{
+ color:#ddd;
+ text-decoration:none;
+ font-weight:bold;
+}
+
+nav a:hover{color:#a855f7}
+
+input{
+ padding:13px;
+ border:1px solid #39334f;
+ border-radius:25px;
+ background:#1b1b2c;
+ color:white;
+ width:230px;
+}
+
+.hero{
+ margin:25px auto;
+ max-width:1400px;
+ min-height:300px;
+ border-radius:18px;
+ padding:45px;
+ display:flex;
+ align-items:center;
+ background:
+ linear-gradient(90deg,#090a14 5%,#21133e 55%,#111326);
+ border:1px solid #393052;
+}
+
+.hero h1{
+ font-size:42px;
+ color:#c084fc;
+ margin-bottom:12px;
+}
+
+.hero p{
+ color:#ddd;
+ font-size:18px;
+}
+
+.hero button{
+ width:auto;
+ padding:15px 30px;
+ margin-top:12px;
+}
+
+main{
+ max-width:1400px;
+ margin:auto;
+ padding:20px;
+}
+
+.categories{
+ display:flex;
+ gap:12px;
+ flex-wrap:wrap;
+ margin:25px 0;
+}
+
+.category{
+ background:#1b1b2e;
+ border:1px solid #39334f;
+ padding:13px 22px;
+ border-radius:25px;
+ color:white;
+}
+
+h2{
+ font-size:28px;
+}
+
+.games{
+ display:grid;
+ grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+ gap:22px;
+}
+
 .game{
- background:#202337;border-radius:16px;
- overflow:hidden;border:1px solid #34364c;
- transition:.2s;
+ background:#171829;
+ border-radius:16px;
+ overflow:hidden;
+ border:1px solid #39334f;
+ transition:.25s;
 }
-.game:hover{transform:translateY(-5px)}
+
+.game:hover{
+ transform:translateY(-6px);
+ border-color:#9333ea;
+ box-shadow:0 8px 25px #7e22ce33;
+}
+
 .cover{
- height:170px;display:flex;
- justify-content:center;align-items:center;
- font-size:65px;
- background:linear-gradient(135deg,#493276,#171d39);
+ height:190px;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ font-size:75px;
+ background:linear-gradient(135deg,#57318c,#171d39);
 }
+
+.cover.zombie{
+ background:linear-gradient(135deg,#741d36,#17121e);
+}
+
 .info{padding:18px}
+
+.info h3{
+ font-size:21px;
+ margin-top:0;
+}
+
+.info p{color:#bbb}
+
 button{
- width:100%;padding:13px;
- border:0;border-radius:9px;
- background:#8065ff;color:white;
- font-weight:bold;font-size:16px;
+ width:100%;
+ padding:13px;
+ border:0;
+ border-radius:10px;
+ background:linear-gradient(90deg,#7c3aed,#a855f7);
+ color:white;
+ font-weight:bold;
+ font-size:16px;
  cursor:pointer;
 }
-button:hover{background:#684be8}
-footer{
- text-align:center;padding:35px;color:#777;
+
+button:hover{
+ background:linear-gradient(90deg,#9333ea,#c084fc);
 }
-@media(max-width:600px){
+
+footer{
+ text-align:center;
+ padding:35px;
+ margin-top:40px;
+ color:#999;
+ border-top:1px solid #29243e;
+}
+
+@media(max-width:650px){
  header{justify-content:center}
- .hero h1{font-size:29px}
+ nav{width:100%;justify-content:center}
  input{width:100%}
+ .hero{padding:25px;min-height:240px}
+ .hero h1{font-size:30px}
+ .hero p{font-size:15px}
 }
 </style>
 </head>
+
 <body>
 
 <header>
  <div class="logo">🎮 KANKA GAMES</div>
- <input id="search" placeholder="Oyun ara...">
+
+ <nav>
+  <a href="#">Ana Sayfa</a>
+  <a href="#games">Oyunlar</a>
+ </nav>
+
+ <input id="search" placeholder="🔎 Oyun ara...">
 </header>
 
 <section class="hero">
- <h1>OYUN DÜNYASINA HOŞ GELDİN!</h1>
- <p>En sevdiğin oyunları keşfet ve ücretsiz oyna.</p>
+ <div>
+  <h1>KANKA GAMES</h1>
+  <h2>Oyun Dünyasına Hoş Geldin!</h2>
+  <p>En sevdiğin oyunları keşfet ve ücretsiz oyna.</p>
+  <button onclick="document.getElementById('games').scrollIntoView({behavior:'smooth'})">
+   ▶️ HEMEN OYNA
+  </button>
+ </div>
 </section>
 
 <main>
+ <div class="categories">
+  <div class="category">⭐ Tümü</div>
+  <div class="category">⚔️ Savaş</div>
+  <div class="category">🧟 Zombi</div>
+  <div class="category">🏕️ Hayatta Kalma</div>
+  <div class="category">🚀 Macera</div>
+ </div>
+
  <h2>🔥 Popüler Oyunlar</h2>
 
  <div class="games" id="games">
@@ -89,25 +229,11 @@ footer{
     <h3>İlk Çağ Kabileler Savaşı</h3>
     <p>Kabilelerin savaşına katıl!</p>
     <button onclick="location.href='oyun.html'">
-     OYNA
+     ▶️ OYNA
     </button>
    </div>
   </div>
 
- </div>
-</main>
-
-<footer>
- © 2026 Kanka Games | Ücretsiz Oyun Platformu
-</footer>
-
-<script>
-document.getElementById("search").addEventListener("input",function(){
- let q=this.value.toLowerCase();
- document.querySelectorAll(".game").forEach(game=>{
-  game.style.display=game.dataset.name.includes(q)?"block":"none";
- });
-});
-</script>
-
-</body>
+  <div class="game" data-name="zombi hayatta kalma">
+   <div class="cover zombie">🧟</div>
+   <div class="…
