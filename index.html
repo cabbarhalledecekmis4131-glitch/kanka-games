@@ -2,104 +2,299 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Kanka Games</title>
 
 <style>
-*{box-sizing:border-box}
-body{
- margin:0;background:#090a14;color:white;
- font-family:Arial,sans-serif;
+* {
+  box-sizing: border-box;
 }
-header{
- background:#10111e;padding:18px 5%;
- display:flex;justify-content:space-between;
- align-items:center;flex-wrap:wrap;gap:15px;
- border-bottom:1px solid #393052;
+
+html {
+  min-height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scroll-behavior: smooth;
 }
-.logo{font-size:27px;font-weight:900;color:#a855f7}
-nav{display:flex;gap:18px}
-nav a{color:white;text-decoration:none}
-input{
- padding:13px;border:1px solid #39334f;
- border-radius:25px;background:#1b1b2c;
- color:white;width:230px;
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background: #090817;
+  color: white;
+  font-family: Arial, sans-serif;
 }
-.hero{
- margin:25px auto;max-width:1400px;
- min-height:260px;padding:40px;
- border-radius:18px;
- background:linear-gradient(110deg,#090a14,#35205d,#111326);
- border:1px solid #393052;
+
+header {
+  background: #17102e;
+  padding: 20px;
+  text-align: center;
+  border-bottom: 2px solid #853cff;
 }
-.hero h1{font-size:40px;color:#c084fc}
-.hero p{color:#ddd;font-size:18px}
-main{max-width:1400px;margin:auto;padding:20px}
-.categories{
- display:flex;gap:10px;flex-wrap:wrap;margin:25px 0;
+
+.logo {
+  color: #bd83ff;
+  font-size: 30px;
+  font-weight: bold;
+  text-shadow: 0 0 15px #853cff;
 }
-.category{
- background:#1b1b2e;border:1px solid #39334f;
- padding:12px 20px;border-radius:25px;color:white;
+
+header p {
+  color: #ccc;
+  margin-bottom: 0;
 }
-.games{
- display:grid;
- grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
- gap:22px;
+
+nav {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 14px;
+  background: #100c20;
 }
-.game{
- background:#171829;border-radius:16px;
- overflow:hidden;border:1px solid #39334f;
- transition:.2s;
+
+nav a {
+  color: white;
+  text-decoration: none;
+  padding: 9px 15px;
+  border-radius: 20px;
+  background: #251743;
 }
-.game:hover{
- transform:translateY(-5px);
- border-color:#9333ea;
+
+nav a:hover {
+  background: #7535c9;
 }
-.cover-img{
- width:100%;height:190px;object-fit:cover;display:block;
+
+.hero {
+  text-align: center;
+  padding: 45px 15px;
+  background: linear-gradient(135deg, #25104c, #100c20);
 }
-.cover{
- height:190px;display:flex;
- align-items:center;justify-content:center;
- font-size:75px;
- background:linear-gradient(135deg,#57318c,#171d39);
+
+.hero h1 {
+  font-size: 34px;
+  margin: 0 0 12px;
 }
-.info{padding:18px}
-.info h3{font-size:20px;margin-top:0}
-.info p{color:#bbb;min-height:38px}
-button{
- width:100%;padding:13px;border:0;
- border-radius:10px;
- background:linear-gradient(90deg,#7c3aed,#a855f7);
- color:white;font-weight:bold;font-size:16px;
- cursor:pointer;
+
+.hero p {
+  color: #ddd;
 }
-button:hover{filter:brightness(1.2)}
-.play-area{
- display:none;margin:30px 0;
- background:#171829;padding:15px;
- border:1px solid #39334f;border-radius:15px;
+
+.search-area {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 0 15px;
 }
-.play-area iframe{
- width:100%;height:650px;
- border:0;border-radius:10px;background:#000;
+
+#search {
+  width: 100%;
+  padding: 15px;
+  border: 2px solid #8b45e8;
+  border-radius: 12px;
+  background: #17122a;
+  color: white;
+  font-size: 16px;
+  outline: none;
 }
-.close-btn{
- margin:10px 0;background:#39334f;
+
+.categories {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 9px;
+  padding: 10px;
 }
-footer{
- text-align:center;padding:35px;
- margin-top:40px;color:#999;
- border-top:1px solid #29243e;
+
+.categories button {
+  border: 1px solid #8b45e8;
+  background: #201438;
+  color: white;
+  padding: 10px 16px;
+  border-radius: 20px;
+  cursor: pointer;
 }
-@media(max-width:650px){
- header{justify-content:center}
- nav{width:100%;justify-content:center}
- input{width:100%}
- .hero{padding:25px}
- .hero h1{font-size:30px}
- .play-area iframe{height:500px}
+
+.categories button.active,
+.categories button:hover {
+  background: #853cff;
+}
+
+.section-title {
+  text-align: center;
+  margin: 30px 10px 20px;
+  color: #c99aff;
+  font-size: 27px;
+}
+
+.games {
+  width: min(1150px, 94%);
+  margin: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 22px;
+  padding-bottom: 35px;
+}
+
+.game {
+  background: #17122a;
+  border: 1px solid #38245b;
+  border-radius: 15px;
+  overflow: hidden;
+  transition: .2s;
+}
+
+.game:hover {
+  transform: translateY(-5px);
+  border-color: #a45cff;
+  box-shadow: 0 0 18px #8138cc55;
+}
+
+.cover {
+  height: 155px;
+  background: linear-gradient(135deg, #51219a, #17102e);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 65px;
+  overflow: hidden;
+}
+
+.cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.info {
+  padding: 15px;
+}
+
+.info h3 {
+  margin: 0 0 10px;
+  color: #d6b5ff;
+}
+
+.info p {
+  color: #ccc;
+  min-height: 38px;
+  line-height: 1.4;
+}
+
+.play-button {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 9px;
+  background: #873de0;
+  color: white;
+  font-weight: bold;
+  font-size: 15px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+}
+
+.play-button:hover {
+  background: #a65cff;
+}
+
+.coming {
+  background: #444;
+  cursor: not-allowed;
+}
+
+#gamePanel {
+  display: none;
+  width: min(1100px, 94%);
+  margin: 25px auto;
+  padding: 15px;
+  background: #17122a;
+  border: 2px solid #853cff;
+  border-radius: 14px;
+}
+
+#gamePanel h2 {
+  color: #c99aff;
+  text-align: center;
+}
+
+#gameFrame {
+  width: 100%;
+  height: 560px;
+  border: none;
+  border-radius: 10px;
+  background: black;
+}
+
+.close-button {
+  display: block;
+  margin: 12px auto;
+  padding: 11px 25px;
+  border: none;
+  border-radius: 8px;
+  background: #a32950;
+  color: white;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+footer {
+  text-align: center;
+  padding: 25px 10px;
+  background: #100c20;
+  color: #aaa;
+  margin-top: 30px;
+}
+
+.no-results {
+  display: none;
+  text-align: center;
+  color: #ccc;
+  padding: 30px;
+}
+
+@media(max-width:600px) {
+  .logo {
+    font-size: 25px;
+  }
+
+  .hero h1 {
+    font-size: 27px;
+  }
+
+  .games {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .cover {
+    height: 115px;
+    font-size: 48px;
+  }
+
+  .info {
+    padding: 11px;
+  }
+
+  .info h3 {
+    font-size: 15px;
+  }
+
+  .info p {
+    font-size: 13px;
+  }
+
+  .play-button {
+    font-size: 13px;
+    padding: 10px 5px;
+  }
+
+  #gameFrame {
+    height: 430px;
+  }
 }
 </style>
 </head>
@@ -107,406 +302,206 @@ footer{
 <body>
 
 <header>
- <div class="logo">🎮 KANKA GAMES</div>
- <nav>
-  <a href="#">Ana Sayfa</a>
-  <a href="#games">Oyunlar</a>
- </nav>
- <input id="search" placeholder="🔎 Oyun ara...">
+  <div class="logo">🎮 KANKA GAMES</div>
+  <p>Ücretsiz oyun platformun!</p>
 </header>
 
-<section class="hero">
- <h1>KANKA GAMES</h1>
- <h2>Oyun Dünyasına Hoş Geldin!</h2>
- <p>En sevdiğin oyunları keşfet ve ücretsiz oyna.</p>
- <button style="max-width:220px"
- onclick="document.getElementById('games').scrollIntoView({behavior:'smooth'})">
- ▶️ OYUNLARI KEŞFET
- </button>
+<nav>
+  <a href="#anasayfa">Ana Sayfa</a>
+  <a href="#oyunlar">Oyunlar</a>
+</nav>
+
+<section class="hero" id="anasayfa">
+  <h1>Oyun Dünyasına Hoş Geldin!</h1>
+  <p>En sevdiğin oyunları Kanka Games'te keşfet.</p>
 </section>
 
-<main>
- <div class="categories">
-  <div class="category">⭐ Tümü</div>
-  <div class="category">⚔️ Savaş</div>
-  <div class="category">🧟 Zombi</div>
-  <div class="category">🚗 Yarış</div>
-  <div class="category">⛏️ Macera</div>
- </div>
-
- <h2>🔥 Popüler Oyunlar</h2>
-
- <div class="games" id="games">
-
-  <!-- İLK ÇAĞ -->
-  <div class="game" data-name="ilk çağ kabileler savaşı">
-   <img class="cover-img" src="ilk-cag-kapak.jpg" alt="İlk Çağ">
-   <div class="info">
-    <h3>İlk Çağ Kabileler Savaşı</h3>
-    <p>Kabilelerin savaşına katıl!</p>
-    <button onclick="location.href='oyun.html'">▶️ OYNA</button>
-   </div>
-  </div>
-
-  <!-- ZOMBİ -->
-  <div class="game" data-name="zombi hayatta kalma">
-   <img class="cover-img" src="zombi-kapak.jpg" alt="Zombi">
-   <div class="info">
-    <h3>Zombi Hayatta Kalma</h3>
-    <p>Zombi istilasına karşı hayatta kal!</p>
-    <button onclick="alert('Zombi oyunu yakında eklenecek!')">
-     ▶️ YAKINDA
-    </button>
-   </div>
-  </div>
-
-  <!-- MINECRAFT -->
-  <div class="game" data-name="minecraft java">
-   <div class="cover">⛏️</div>
-   <div class="info">
-    <h3>Minecraft Java Edition</h3>
-    <p>Kendi dünyanı keşfet ve inşa et!</p>
-    <button onclick="window.open('https://www.minecraft.net/tr-tr/download','_blank')">
-     ▶️ MINECRAFT'I İNDİR
-    </button>
-   </div>
-  </div>
-
-  <!-- GTA 5 -->
-  <div class="game" data-name="gta 5 grand theft auto">
-   <div class="cover">🚗</div>
-   <div class="info">
-    <h3>GTA 5 Enhanced</h3>
-    <p>Los Santos dünyasını keşfet!</p>
-    <button onclick="window.open('https://store.rockstargames.com/game/buy-gta-v','_blank')">
-     ▶️ GTA 5'İ İNDİR
-    </button>
-   </div>
-  </div>
-
-  <!-- GTA SAN ANDREAS -->
-  <div class="game" data-name="gta san andreas">
-   <div class="cover">🚘</div>
-   <div class="info">
-    <h3>GTA San Andreas</h3>
-    <p>CJ ile sokaklara geri dön!</p>
-    <button onclick="window.open('https://store.steampowered.com/app/1547000/','_blank')">
-     ▶️ OYUN SAYFASI
-    </button>
-   </div>
-  </div>
-
-  <!-- RED BALL 4 -->
-  <div class="game" data-name="red ball 4 kırmızı top">
-   <div class="cover" style="background:#a51e27">🔴</div>
-   <div class="info">
-    <h3>Red Ball 4</h3>
-    <p>Engelleri aş ve yıldızları topla!</p>
-    <button onclick="showGame('redball-area')">▶️ OYNA</button>
-   </div>
-  </div>
-
-  <!-- STICK WAR -->
-  <div class="game" data-name="stick war savaş">
-   <div class="cover">⚔️</div>
-   <div class="info">
-    <h3>Stick War</h3>
-    <p>Ordunu kur, düşman heykelini yok et!</p>
-    <button onclick="showGame('stickwar-area')">▶️ OYNA</button>
-   </div>
-  </div>
-
- </div>
-
- <!-- RED BALL OYUN ALANI -->
- <section id="redball-area" class="play-area">
-  <h2>🔴 Red Ball 4</h2>
-  <button class="close-btn" onclick="hideGames()">KAPAT</button>
-  <iframe
-   src="https://www.miniplay.com/embed/red-ball-4"
-   allow="autoplay; fullscreen"
-   allowfullscreen>
-  </iframe>
- </section>
-<!DOCTYPE html>
-<html lang="tr">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Geometry Dash - Kanka Edition</title>
-<style>
-*{box-sizing:border-box}
-body{
- margin:0;background:#090719;color:white;
- font-family:Arial,sans-serif;text-align:center;
- overflow:hidden;
-}
-header{
- padding:15px;background:#17102e;
- color:#c084fc;font-size:23px;font-weight:bold;
-}
-#gamebox{
- width:min(950px,96vw);
- margin:25px auto;
-}
-canvas{
- width:100%;display:block;
- background:#120d2b;
- border:3px solid #8b5cf6;
- border-radius:12px;
- touch-action:manipulation;
-}
-#score{font-size:22px;margin:15px}
-button{
- background:#9333ea;color:white;border:0;
- padding:14px 28px;border-radius:10px;
- font-size:17px;font-weight:bold;
- cursor:pointer;margin:8px;
-}
-p{color:#ccc}
-</style>
-</head>
-<body>
-
-<header>🔷 GEOMETRY DASH: KANKA EDITION</header>
-
-<div id="gamebox">
- <div id="score">PUAN: 0</div>
- <canvas id="game" width="900" height="400"></canvas>
- <h3 id="message">Başlamak için dokun veya SPACE tuşuna bas!</h3>
- <button onclick="restart()">YENİDEN BAŞLAT</button>
- <p>Bilgisayar: SPACE / ↑ | Telefon: Ekrana dokun</p>
+<div class="search-area">
+  <input
+    type="text"
+    id="search"
+    placeholder="🔎 Oyun ara..."
+    oninput="filterGames()"
+  >
 </div>
 
-<script>
-const canvas=document.getElementById("game");
-const ctx=canvas.getContext("2d");
-const scoreText=document.getElementById("score");
-const message=document.getElementById("message");
+<div class="categories">
+  <button class="active" onclick="setCategory('all',this)">Tümü</button>
+  <button onclick="setCategory('action',this)">Aksiyon</button>
+  <button onclick="setCategory('adventure',this)">Macera</button>
+  <button onclick="setCategory('platform',this)">Platform</button>
+  <button onclick="setCategory('other',this)">Diğer</button>
+</div>
 
-let player,obstacles,score,speed,started,dead,lastTime;
-let audio;
+<h2 class="section-title" id="oyunlar">🔥 OYUNLARIMIZ</h2>
 
-function sound(freq=500){
- try{
-  audio=audio||new (window.AudioContext||window.webkitAudioContext)();
-  if(audio.state==="suspended")audio.resume();
-  const osc=audio.createOscillator();
-  const gain=audio.createGain();
-  osc.frequency.value=freq;
-  osc.type="square";
-  gain.gain.setValueAtTime(.07,audio.currentTime);
-  gain.gain.exponentialRampToValueAtTime(.001,audio.currentTime+.12);
-  osc.connect(gain);
-  gain.connect(audio.destination);
-  osc.start();
-  osc.stop(audio.currentTime+.12);
- }catch(e){}
-}
+<section class="games" id="games">
 
-function reset(){
- player={x:110,y:290,size:32,vy:0,ground:true};
- obstacles=[];
- score=0;
- speed=6;
- started=false;
- dead=false;
- lastTime=0;
- scoreText.textContent="PUAN: 0";
- message.textContent="Başlamak için dokun veya SPACE tuşuna bas!";
- draw();
-}
+  <div class="game" data-name="ilk çağ kabileler savaşı" data-category="action adventure">
+    <div class="cover">
+      <img src="ilk-cag-kapak.jpg" alt="İlk Çağ Kabileler Savaşı"
+           onerror="this.style.display='none';this.parentElement.textContent='⚔️'">
+    </div>
+    <div class="info">
+      <h3>İlk Çağ Kabileler Savaşı</h3>
+      <p>Kabilelerin savaşına katıl!</p>
+      <a class="play-button" href="oyun.html">▶️ OYNA</a>
+    </div>
+  </div>
 
-function jump(){
- if(dead){
-  restart();
-  return;
- }
- if(!started){
-  started=true;
-  message.textContent="Zıpla ve dikenlerden kaç!";
- }
- if(player.ground){
-  player.vy=-14;
-  player.ground=false;
-  sound(650);
- }
-}
+  <div class="game" data-name="zombi hayatta kalma" data-category="action adventure">
+    <div class="cover">
+      <img src="zombi-kapak.jpg" alt="Zombi Hayatta Kalma"
+           onerror="this.style.display='none';this.parentElement.textContent='🧟'">
+    </div>
+    <div class="info">
+      <h3>Zombi Hayatta Kalma</h3>
+      <p>Zombilere karşı hayatta kal!</p>
+      <button class="play-button coming" disabled>YAKINDA</button>
+    </div>
+  </div>
 
-function restart(){
- reset();
- started=true;
- message.textContent="Oyun başladı!";
- jump();
-}
+  <div class="game" data-name="geometry dash kanka edition" data-category="platform">
+    <div class="cover">🔷</div>
+    <div class="info">
+      <h3>Geometry Dash: Kanka Edition</h3>
+      <p>Zıpla, dikenlerden kaç ve rekorunu kır!</p>
+      <a class="play-button" href="geometry.html">▶️ OYNA</a>
+    </div>
+  </div>
 
-function addObstacle(){
- const height=35+Math.random()*15;
- obstacles.push({
-  x:930,
-  w:30,
-  h:height
- });
-}
+  <div class="game" data-name="red ball 4" data-category="platform adventure">
+    <div class="cover">🔴</div>
+    <div class="info">
+      <h3>Red Ball 4</h3>
+      <p>Kırmızı top ile maceraya başla!</p>
+      <button class="play-button" onclick="openGame('https://www.miniplay.com/embed/red-ball-4','Red Ball 4')">
+        ▶️ OYNA
+      </button>
+    </div>
+  </div>
 
-function draw(){
- ctx.clearRect(0,0,900,400);
+  <div class="game" data-name="stick war" data-category="action">
+    <div class="cover">⚔️</div>
+    <div class="info">
+      <h3>Stick War</h3>
+      <p>Ordunu kur ve savaş!</p>
+      <button class="play-button" onclick="openGame('https://stickwar.org/','Stick War')">
+        ▶️ OYNA
+      </button>
+    </div>
+  </div>
 
- // Arka plan
- const gradient=ctx.createLinearGradient(0,0,0,400);
- gradient.addColorStop(0,"#21134a");
- gradient.addColorStop(1,"#090719");
- ctx.fillStyle=gradient;
- ctx.fillRect(0,0,900,400);
+  <div class="game" data-name="minecraft java edition" data-category="adventure">
+    <div class="cover">⛏️</div>
+    <div class="info">
+      <h3>Minecraft Java Edition</h3>
+      <p>Kendi dünyanı keşfet!</p>
+      <a class="play-button" href="https://www.minecraft.net/download" target="_blank" rel="noopener">
+        ▶️ İNDİR
+      </a>
+    </div>
+  </div>
 
- // Arka plan ışıkları
- ctx.fillStyle="#ffffff18";
- for(let i=0;i<30;i++){
-  let x=(i*137+score*2)%900;
-  let y=(i*71)%260;
-  ctx.fillRect(x,y,3,3);
- }
+  <div class="game" data-name="gta 5 enhanced" data-category="action adventure">
+    <div class="cover">🚗</div>
+    <div class="info">
+      <h3>GTA 5 Enhanced</h3>
+      <p>Los Santos dünyasına gir!</p>
+      <a class="play-button" href="https://store.rockstargames.com/game/buy-grand-theft-auto-v" target="_blank" rel="noopener">
+        ▶️ OYUN SAYFASI
+      </a>
+    </div>
+  </div>
 
- // Zemin
- ctx.fillStyle="#7c3aed";
- ctx.fillRect(0,330,900,70);
- ctx.fillStyle="#c084fc";
- ctx.fillRect(0,330,900,5);
+  <div class="game" data-name="gta san andreas" data-category="action adventure">
+    <div class="cover">🌴</div>
+    <div class="info">
+      <h3>GTA San Andreas</h3>
+      <p>San Andreas sokaklarını keşfet!</p>
+      <a class="play-button" href="https://store.steampowered.com/app/12120/Grand_Theft_Auto_San_Andreas/" target="_blank" rel="noopener">
+        ▶️ OYUN SAYFASI
+      </a>
+    </div>
+  </div>
 
- // Oyuncu
- ctx.save();
- ctx.translate(player.x+16,player.y+16);
- ctx.rotate(started&&!dead?score*.025:0);
- ctx.fillStyle="#22e6ff";
- ctx.shadowColor="#22e6ff";
- ctx.shadowBlur=18;
- ctx.fillRect(-16,-16,32,32);
- ctx.strokeStyle="white";
- ctx.lineWidth=3;
- ctx.strokeRect(-16,-16,32,32);
- ctx.restore();
+</section>
 
- // Dikenler
- obstacles.forEach(o=>{
-  ctx.fillStyle="#ff3e79";
-  ctx.shadowColor="#ff0055";
-  ctx.shadowBlur=12;
-  ctx.beginPath();
-  ctx.moveTo(o.x,330);
-  ctx.lineTo(o.x+o.w/2,330-o.h);
-  ctx.lineTo(o.x+o.w,330);
-  ctx.closePath();
-  ctx.fill();
-  ctx.shadowBlur=0;
- });
+<div class="no-results" id="noResults">
+  Aradığın oyun bulunamadı.
+</div>
 
- ctx.fillStyle="white";
- ctx.font="bold 17px Arial";
- ctx.fillText("KANKA GAMES",20,30);
-}
-
-function update(delta){
- if(!started||dead)return;
-
- const dt=Math.min(delta/16.67,2);
-
- player.vy+=.7*dt;
- player.y+=player.vy*dt;
-
- if(player.y+player.size>=330){
-  player.y=330-player.size;
-  player.vy=0;
-  player.ground=true;
- }
-
- obstacles.forEach(o=>o.x-=speed*dt);
- obstacles=obstacles.filter(o=>o.x+o.w>0);
-
- if(obstacles.length===0||obstacles[obstacles.length-1].x<580){
-  addObstacle();
- }
-
- // Çarpışma
- obstacles.forEach(o=>{
-  const px=player.x+5;
-  const pr=player.x+player.size-5;
-  const py=player.y+5;
-  const pb=player.y+player.size;
-
-  if(pr>o.x+5&&px<o.x+o.w-5&&pb>330-o.h+8&&py<330){
-   dead=true;
-   message.textContent="💥 OYUN BİTTİ! Tekrar dene!";
-   sound(120);
-  }
- });
-
- score+=dt;
- speed=Math.min(6+score/500,12);
- scoreText.textContent="PUAN: "+Math.floor(score);
-}
-
-function loop(time){
- if(!lastTime)lastTime=time;
- const delta=time-lastTime;
- lastTime=time;
- update(delta);
- draw();
- requestAnimationFrame(loop);
-}
-
-document.addEventListener("keydown",e=>{
- if(e.code==="Space"||e.code==="ArrowUp"){
-  e.preventDefault();
-  if(!e.repeat)jump();
- }
-});
-
-canvas.addEventListener("pointerdown",jump);
-
-reset();
-requestAnimationFrame(loop);
-</script>
-</body>
-</html>
- <!-- STICK WAR OYUN ALANI -->
- <section id="stickwar-area" class="play-area">
-  <h2>⚔️ Stick War</h2>
-  <button class="close-btn" onclick="hideGames()">KAPAT</button>
-  <iframe
-   src="https://stickwar.org/"
-   allow="autoplay; fullscreen"
-   allowfullscreen>
+<section id="gamePanel">
+  <h2 id="gameTitle">Oyun</h2>
+  <iframe id="gameFrame"
+    src="about:blank"
+    allow="autoplay; fullscreen; gamepad"
+    allowfullscreen>
   </iframe>
-  <p>Ses gelmezse oyun içindeki ses ayarını kontrol et.</p>
- </section>
-
-</main>
+  <button class="close-button" onclick="closeGame()">✖️ Oyunu Kapat</button>
+</section>
 
 <footer>
- © 2026 Kanka Games | Ücretsiz Oyun Platformu
+  © 2026 Kanka Games
+  <p>Oyunların keyfini çıkar!</p>
 </footer>
 
 <script>
-function showGame(id){
- hideGames();
- const area=document.getElementById(id);
- area.style.display="block";
- area.scrollIntoView({behavior:"smooth"});
+let currentCategory = "all";
+
+function setCategory(category, button) {
+  currentCategory = category;
+
+  document.querySelectorAll(".categories button").forEach(btn => {
+    btn.classList.remove("active");
+  });
+
+  button.classList.add("active");
+  filterGames();
 }
 
-function hideGames(){
- document.querySelectorAll(".play-area").forEach(area=>{
-  area.style.display="none";
- });
+function filterGames() {
+  const search = document.getElementById("search").value.toLowerCase();
+  const games = document.querySelectorAll(".game");
+  let visible = 0;
+
+  games.forEach(game => {
+    const name = game.dataset.name.toLowerCase();
+    const categories = game.dataset.category;
+
+    const matchesSearch = name.includes(search);
+    const matchesCategory =
+      currentCategory === "all" ||
+      categories.split(" ").includes(currentCategory);
+
+    if (matchesSearch && matchesCategory) {
+      game.style.display = "";
+      visible++;
+    } else {
+      game.style.display = "none";
+    }
+  });
+
+  document.getElementById("noResults").style.display =
+    visible === 0 ? "block" : "none";
 }
 
-document.getElementById("search").addEventListener("input",function(){
- let q=this.value.toLowerCase();
+function openGame(url, title) {
+  const panel = document.getElementById("gamePanel");
+  document.getElementById("gameTitle").textContent = title;
+  document.getElementById("gameFrame").src = url;
+  panel.style.display = "block";
 
- document.querySelectorAll(".game").forEach(game=>{
-  game.style.display=game.dataset.name.includes(q)?"block":"none";
- });
-});
+  panel.scrollIntoView({
+    behavior: "smooth",
+    block: "start"
+  });
+}
+
+function closeGame() {
+  document.getElementById("gameFrame").src = "about:blank";
+  document.getElementById("gamePanel").style.display = "none";
+}
 </script>
 
 </body>
